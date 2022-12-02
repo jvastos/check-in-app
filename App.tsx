@@ -1,14 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+import { StyleSheet, View, Button } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,3 +8,39 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+interface User {
+  id: number;
+  firstName: string;
+  lastName: string;
+}
+
+const users: User[] = [
+  {
+    id: 1,
+    firstName: 'João',
+    lastName: 'Almeida',
+  },
+  {
+    id: 2,
+    firstName: 'Janja',
+    lastName: 'Garnbret',
+  },
+  {
+    id: 3,
+    firstName: 'Tommy',
+    lastName: 'Caldwell',
+  },
+];
+
+const App = () => {
+  return (
+    <View style={styles.container}>
+      <Button title='Check In' />
+      <Button title='Check Out' />
+      <Button title='Check The Wall' />
+    </View>
+  );
+};
+
+export default App;
