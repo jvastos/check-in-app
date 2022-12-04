@@ -1,13 +1,9 @@
-import { StyleSheet, View, Button } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeScreen from './components/pages/HomeScreen';
+import ListScreen from './components/pages/ListScreen';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const Stack = createNativeStackNavigator();
 
 interface User {
   id: number;
@@ -35,11 +31,18 @@ const users: User[] = [
 
 const App = () => {
   return (
-    <View style={styles.container}>
-      <Button title='Check In' />
-      <Button title='Check Out' />
-      <Button title='Check The Wall' />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name='Home'
+          component={HomeScreen}
+        ></Stack.Screen>
+        <Stack.Screen
+          name='List'
+          component={ListScreen}
+        ></Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
