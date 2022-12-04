@@ -3,7 +3,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './components/pages/HomeScreen';
 import ListScreen from './components/pages/ListScreen';
 
-const Stack = createNativeStackNavigator();
+const RootStack = createNativeStackNavigator<RootStackParamList>();
+
+type RootStackParamList = {
+  Home: undefined;
+  List: undefined;
+};
 
 interface User {
   id: number;
@@ -32,16 +37,16 @@ const users: User[] = [
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
+      <RootStack.Navigator>
+        <RootStack.Screen
           name='Home'
           component={HomeScreen}
-        ></Stack.Screen>
-        <Stack.Screen
+        ></RootStack.Screen>
+        <RootStack.Screen
           name='List'
           component={ListScreen}
-        ></Stack.Screen>
-      </Stack.Navigator>
+        ></RootStack.Screen>
+      </RootStack.Navigator>
     </NavigationContainer>
   );
 };

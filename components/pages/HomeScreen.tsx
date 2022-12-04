@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Button } from 'react-native';
+import { StyleSheet, View, Button, Text } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 const styles = StyleSheet.create({
   container: {
@@ -10,9 +11,18 @@ const styles = StyleSheet.create({
   },
 });
 
-const HomeScreen = ({ navigation }) => {
+type RootStackParamList = {
+  Home: undefined;
+  List: undefined;
+};
+
+type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
+
+const HomeScreen = ({ navigation }: Props) => {
   return (
     <View style={styles.container}>
+      <Text>Your status: {status ? status : 'No status available.'}</Text>
+      <br />
       <Button title='Check In' />
       <Button title='Check Out' />
       <Button
