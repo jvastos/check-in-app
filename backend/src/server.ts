@@ -2,7 +2,7 @@ import express from 'express';
 import userRoutes from '../routes/users/users';
 import cors from 'cors';
 
-export function createServer() {
+export function createServer(db: any) {
   const app = express();
 
   app.use(
@@ -13,7 +13,7 @@ export function createServer() {
 
   app.use(express.json());
 
-  app.use('/', userRoutes());
+  app.use('/', userRoutes(db));
 
   return app;
 }

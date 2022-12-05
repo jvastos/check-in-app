@@ -12,13 +12,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 // Getting all the public repos from a specific user.
 // The function gets the username through a query in the request's url.
-const getUsers = () => (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const userName = req.query.username;
-    // res.send(reposList.data);
+const getAllUsers = (db) => (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const users = yield db.collection('users').find({}).toArray();
+    console.log(users);
+    res.send(users);
 });
-function userRoutes() {
-    const router = new express_1.Router();
-    router.get('/users', getUsers());
+/* getAllUsers: async () => {
+    const users = await client.db(dbName).collection('usersTest').find({}).toArray();
+    return users;
+  }, */
+function userRoutes(db) {
+    const router = (0, express_1.Router)();
+    router.get('/allusers', getAllUsers(db));
     return router;
 }
 exports.default = userRoutes;

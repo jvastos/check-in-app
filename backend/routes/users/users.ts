@@ -1,17 +1,15 @@
 import { Router } from 'express';
 
-// Getting all the public repos from a specific user.
-// The function gets the username through a query in the request's url.
-const getAllUsers = () => async (req, res) => {
-  const userName = req.query.username;
-
-  // res.send(reposList.data);
+const getAllUsers = (db: any) => async (req: any, res: any) => {
+  const users = await db.collection('users').find({}).toArray();
+  console.log(users);
+  res.send(users);
 };
 
-export default function userRoutes() {
-  const router = new Router();
+export default function userRoutes(db: any) {
+  const router = Router();
 
-  router.get('/allusers', getAllUsers());
+  router.get('/allusers', getAllUsers(db));
 
   return router;
 }
