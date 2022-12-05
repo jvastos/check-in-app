@@ -1,22 +1,19 @@
-import express from 'express';
-import cors from 'cors';
+import dotenv from 'dotenv';
+dotenv.config();
+import { createServer } from './server';
 
-const app = express();
+const PORT = process.env.PORT;
 
-const port = 3000;
+async function main() {
+  const server = createServer();
 
-app.use(
-  cors({
-    origin: '*',
-  })
-);
+  server.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
 
-app.use(express.json());
+main().catch((err) => {
+  console.error('Something went wrong running the main fnc', err);
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-
-app.listen(port, () => {
-  console.log(`Server listening on ${port}`);
+  process.exit(1);
 });
