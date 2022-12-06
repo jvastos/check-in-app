@@ -10,30 +10,6 @@ type RootStackParamList = {
   List: undefined;
 };
 
-interface User {
-  id: number;
-  firstName: string;
-  lastName: string;
-}
-
-const users: User[] = [
-  {
-    id: 1,
-    firstName: 'João',
-    lastName: 'Almeida',
-  },
-  {
-    id: 2,
-    firstName: 'Janja',
-    lastName: 'Garnbret',
-  },
-  {
-    id: 3,
-    firstName: 'Tommy',
-    lastName: 'Caldwell',
-  },
-];
-
 const App = () => {
   return (
     <NavigationContainer>
