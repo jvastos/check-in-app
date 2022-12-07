@@ -18,10 +18,10 @@ const userControllers = {
     }),
     updateUser: (db) => (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const userId = req.params.userId;
-        const checkInStatus = req.params.checkInStatus;
+        const checkInStatus = req.params.checkInStatus === 'true';
         const foundUser = yield db
             .collection('users')
-            .updateOne({ _id: new mongodb_1.ObjectId(`${userId}`) }, { $set: { isCheckedIn: `${checkInStatus}` } });
+            .updateOne({ _id: new mongodb_1.ObjectId(`${userId}`) }, { $set: { isCheckedIn: checkInStatus } });
         res.status(200).send(foundUser);
     }),
 };

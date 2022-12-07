@@ -16,3 +16,18 @@ export const UseCheckInState = create<CheckInState>()(
     { name: 'use-checkin-storage' }
   )
 );
+
+interface UsersState {
+  checkedInUsers: string[];
+  setCheckedInUsers: (checkedInUsers: string[]) => void;
+}
+
+export const checkedInUsersState = create<UsersState>()(
+  devtools(
+    (set) => ({
+      checkedInUsers: [],
+      setCheckedInUsers: (checkedInUsers) => set({ checkedInUsers: checkedInUsers }),
+    }),
+    { name: 'use-checked-in-users-storage' }
+  )
+);
