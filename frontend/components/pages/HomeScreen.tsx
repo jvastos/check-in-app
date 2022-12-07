@@ -21,30 +21,33 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const HomeScreen = ({ navigation }: Props) => {
   const checkInStatus: boolean = UseCheckInState((state) => state.isCheckedIn);
-  const toggleCheckInFunction = UseCheckInState((state) => state.checkInToggle);
+  const setIsCheckedIn = UseCheckInState((state) => state.setIsCheckedIn);
 
-  const checkStatus = () => {
-    switch (checkInStatus) {
-      case true:
-        return 'Checked in';
-      case false:
-        return 'Checked out';
-      default:
-        return 'No status available.';
+  const userId = '638df42e6ae18e0e039a2aa0';
+
+  const updateUserCheckInStatus = async (checkInStatus: boolean) => {
+    checkInStatus === false ? setIsCheckedIn(true) : setIsCheckedIn(false);
+    try {
+      //TODO: Fix the inverted logic in the line below. Why when I send the state to the DB I'm always one step behind?
+      await fetch(`http://localhost:5000/${userId}/${!checkInStatus}`, {
+        method: 'PATCH',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json;charset=UTF-8',
+        },
+      });
+    } catch (error) {
+      console.log('error', error);
     }
-  };
-
-  const checkInHandler = (checkInStatus: boolean) => {
-    toggleCheckInFunction(checkInStatus);
   };
 
   return (
     <View style={styles.container}>
-      <Text>Your status: {checkStatus()}</Text>
+      <Text>Your status: {checkInStatus === true ? 'Checked in' : 'Checked out'}</Text>
       <Button
-        title={checkStatus() === 'Checked in' ? 'Checke out' : 'Check in'}
+        title={checkInStatus === true ? 'Check out' : 'Check in'}
         onPress={() => {
-          checkInHandler(checkInStatus);
+          updateUserCheckInStatus(checkInStatus);
         }}
       />
       <Button
