@@ -1,15 +1,16 @@
 import { Router } from 'express';
+import userControllers from '../../handlers/users';
 
-const getAllUsers = (db: any) => async (req: any, res: any) => {
-  const users = await db.collection('users').find({}).toArray();
-  console.log(users);
-  res.send(users);
-};
+const getAllUsers = userControllers.getAllUsers;
+const updateUser = userControllers.updateUser;
 
-export default function userRoutes(db: any) {
+function userRoutes(db: any) {
   const router = Router();
 
   router.get('/allusers', getAllUsers(db));
+  router.patch('/:userId/:checkInStatus', updateUser(db));
 
   return router;
 }
+
+export default userRoutes;
