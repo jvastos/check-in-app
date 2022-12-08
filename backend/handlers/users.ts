@@ -3,7 +3,6 @@ import { ObjectId } from 'mongodb';
 const userControllers = {
   getAllUsers: (db: any) => async (req: any, res: any) => {
     const users = await db.collection('users').find({}).toArray();
-    console.log(users);
     res.status(200).send(users);
   },
   updateUser: (db: any) => async (req: any, res: any) => {

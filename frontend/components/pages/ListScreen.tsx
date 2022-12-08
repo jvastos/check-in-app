@@ -25,22 +25,18 @@ const ListScreen = ({ navigation }: Props) => {
           }
         })
       );
-      console.log('from inside the useEffect: ', checkedInUsers);
     };
     fetchAllUsers();
   }, []);
 
   return (
-    console.log('from inside the return: ', checkedInUsers),
-    (
-      <View>
-        {checkedInUsers[0] !== undefined ? (
-          checkedInUsers.map((i) => <p key={Math.random()}>{i}</p>)
-        ) : (
-          <p>Sad. It seems like no one is on the wall right now.</p>
-        )}
-      </View>
-    )
+    <View>
+      {checkedInUsers[0] !== undefined ? (
+        checkedInUsers.map((i) => <p key={Math.random()}>{i}</p>)
+      ) : (
+        <p>Sad. It seems like no one is on the wall right now.</p>
+      )}
+    </View>
   );
 };
 
