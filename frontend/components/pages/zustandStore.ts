@@ -3,14 +3,14 @@ import { devtools } from 'zustand/middleware';
 
 interface CheckInState {
   isCheckedIn: boolean;
-  setIsCheckedIn: (checkInStatus: boolean) => void;
+  setIsCheckedIn: () => void;
 }
 
 export const UseCheckInState = create<CheckInState>()(
   devtools(
     (set) => ({
       isCheckedIn: false,
-      setIsCheckedIn: (checkInStatus) => set({ isCheckedIn: checkInStatus }),
+      setIsCheckedIn: () => set((state) => ({ isCheckedIn: !state.isCheckedIn })),
     }),
     { name: 'use-checkin-storage' }
   )

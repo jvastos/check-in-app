@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View, Button, Text } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { UseCheckInState } from './zustandStore';
@@ -26,10 +26,8 @@ const HomeScreen = ({ navigation }: Props) => {
   const userId = '638df42e6ae18e0e039a2aa0';
 
   const updateUserCheckInStatus = async (checkInStatus: boolean) => {
-    checkInStatus === false ? setIsCheckedIn(true) : setIsCheckedIn(false);
     try {
-      //TODO: Fix the inverted logic in the line below. Why when I send the state to the DB I'm always one step behind?
-      await fetch(`http://localhost:5000/${userId}/${!checkInStatus}`, {
+      await fetch(`http://localhost:5000/${userId}/${checkInStatus}`, {
         method: 'PATCH',
         headers: {
           Accept: 'application/json',
@@ -41,14 +39,16 @@ const HomeScreen = ({ navigation }: Props) => {
     }
   };
 
+  useEffect(() => {
+    updateUserCheckInStatus(checkInStatus);
+  }, [checkInStatus]);
+
   return (
     <View style={styles.container}>
       <Text>Your status: {checkInStatus === true ? 'Checked in' : 'Checked out'}</Text>
       <Button
         title={checkInStatus === true ? 'Check out' : 'Check in'}
-        onPress={() => {
-          updateUserCheckInStatus(checkInStatus);
-        }}
+        onPress={setIsCheckedIn}
       />
       <Button
         title='Check The Wall'
