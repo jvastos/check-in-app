@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { checkedInUsersState } from './zustandStore';
+import { userStateStore } from './zustandStore';
 
 type RootStackParamList = {
   Home: undefined;
@@ -24,8 +24,8 @@ async function request<T>(url: string): Promise<T> {
 }
 
 const ListScreen = ({ navigation }: Props) => {
-  const checkedInUsers = checkedInUsersState((state) => state.checkedInUsers);
-  const setCheckedInUsers = checkedInUsersState((state) => state.setCheckedInUsers);
+  const checkedInUsers = userStateStore((state) => state.checkedInUsers);
+  const setCheckedInUsers = userStateStore((state) => state.setCheckedInUsers);
 
   useEffect(() => {
     const fetchAllUsers = async () => {

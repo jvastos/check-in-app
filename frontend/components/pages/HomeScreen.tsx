@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View, Button, Text } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { UseCheckInState } from './zustandStore';
+import { userStateStore } from './zustandStore';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,8 +20,8 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const HomeScreen = ({ navigation }: Props) => {
-  const checkInStatus: boolean = UseCheckInState((state) => state.isCheckedIn);
-  const setIsCheckedIn = UseCheckInState((state) => state.setIsCheckedIn);
+  const checkInStatus: boolean = userStateStore((state) => state.isCheckedIn);
+  const setIsCheckedIn = userStateStore((state) => state.setIsCheckedIn);
 
   const userId = '638df42e6ae18e0e039a2aa0';
 
