@@ -7,10 +7,12 @@ const express_1 = require("express");
 const users_1 = __importDefault(require("../../handlers/users"));
 const getAllUsers = users_1.default.getAllUsers;
 const updateUser = users_1.default.updateUser;
+const createUser = users_1.default.createUser;
 function userRoutes(db) {
     const router = (0, express_1.Router)();
     router.get('/allusers', getAllUsers(db));
     router.patch('/:userId/:checkInStatus', updateUser(db));
+    router.post('/users', createUser(db));
     return router;
 }
 exports.default = userRoutes;

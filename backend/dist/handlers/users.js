@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongodb_1 = require("mongodb");
-const userControllers = {
+const userHandlers = {
     getAllUsers: (db) => (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const users = yield db.collection('users').find({}).toArray();
         res.status(200).send(users);
@@ -23,6 +23,12 @@ const userControllers = {
             .updateOne({ _id: new mongodb_1.ObjectId(`${userId}`) }, { $set: { isCheckedIn: checkInStatus } });
         res.status(200).send(foundUser);
     }),
+    createUser: (db) => (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        console.log(req.body);
+        const user = Object.assign(Object.assign({}, req.body), { isCheckedIn: false });
+        const foundUser = yield db.collection('users').insert(user);
+        res.status(200).send(req.body);
+    }),
 };
-exports.default = userControllers;
+exports.default = userHandlers;
 //# sourceMappingURL=users.js.map
