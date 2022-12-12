@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, TextInput, StyleSheet, Text } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
@@ -24,11 +24,37 @@ type RootStackParamList = {
   List: undefined;
 };
 
+interface User {
+  username: string;
+  password: string;
+  isCheckedIn: boolean;
+}
+
+async function request<T>(url: string): Promise<T> {
+  const response = await fetch(url);
+  return await response.json();
+}
+
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const LoginScreen = ({ navigation }: Props) => {
   const username: string = userStateStore((state) => state.username);
   const setUserName = userStateStore((state) => state.setUserName);
+  const usernameIsTaken: boolean = userStateStore((state) => state.usernameIsTaken);
+  const setUsernameIsTaken = userStateStore((state) => state.setUsernameIsTaken);
+
+  useEffect(() => {
+    const checkUsernameAvailability = async (username: string) => {
+      const allUsers = await request<User[]>('http://localhost:5000/allusers');
+      const allUsernames = allUsers.map((i) => i.username);
+      if (allUsernames.includes(username)) {
+        setUsernameIsTaken(true);
+      } else {
+        setUsernameIsTaken(false);
+      }
+    };
+    checkUsernameAvailability(username);
+  });
 
   return (
     <View style={pageStyles.container}>
@@ -43,6 +69,9 @@ const LoginScreen = ({ navigation }: Props) => {
         }}
         value={username}
       />
+      {username !== '' && (
+        <Text>{usernameIsTaken ? 'Username is taken.' : 'Cool. Username is NOT taken.'}</Text>
+      )}
       <Text>Password</Text>
       <TextInput
         style={pageStyles.input}

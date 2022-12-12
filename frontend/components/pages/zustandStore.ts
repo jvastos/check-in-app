@@ -8,8 +8,8 @@ interface UserState {
   setCheckedInUsers: (checkedInUsers: string[]) => void;
   username: string;
   setUserName: (username: string) => void;
-  usernameIsAvailable: boolean;
-  setUsernameToAvailable: () => void;
+  usernameIsTaken: boolean;
+  setUsernameIsTaken: (usernameStatus: boolean) => void;
 }
 
 export const userStateStore = create<UserState>()(
@@ -21,8 +21,8 @@ export const userStateStore = create<UserState>()(
       setCheckedInUsers: (checkedInUsers) => set({ checkedInUsers: checkedInUsers }),
       username: '',
       setUserName: (username) => set({ username: username }),
-      usernameIsAvailable: false,
-      setUsernameToAvailable: () => set({ usernameIsAvailable: true }),
+      usernameIsTaken: false,
+      setUsernameIsTaken: (usernameStatus) => set({ usernameIsTaken: usernameStatus }),
     }),
     { name: 'user-state-store' }
   )
