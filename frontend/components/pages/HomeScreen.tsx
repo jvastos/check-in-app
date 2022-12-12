@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
 });
 
 type RootStackParamList = {
+  Login: undefined;
   Home: undefined;
   List: undefined;
 };

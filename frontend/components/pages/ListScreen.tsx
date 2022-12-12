@@ -4,6 +4,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { userStateStore } from './zustandStore';
 
 type RootStackParamList = {
+  Login: undefined;
   Home: undefined;
   List: undefined;
 };
@@ -11,9 +12,7 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'List'>;
 
 interface User {
-  firstName: string;
-  lastName: string;
-  email: string;
+  username: string;
   password: string;
   isCheckedIn: boolean;
 }
@@ -30,9 +29,7 @@ const ListScreen = ({ navigation }: Props) => {
   useEffect(() => {
     const fetchAllUsers = async () => {
       const allUsers = await request<User[]>('http://localhost:5000/allusers');
-      const newUsers = allUsers
-        .filter((i) => i.isCheckedIn === true)
-        .map((i) => `${i.firstName} ${i.lastName}`);
+      const newUsers = allUsers.filter((i) => i.isCheckedIn === true).map((i) => `${i.username}`);
 
       setCheckedInUsers(newUsers);
     };

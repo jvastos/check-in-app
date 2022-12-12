@@ -1,5 +1,8 @@
 import React from 'react';
 import { View, TextInput, StyleSheet, Text } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+
+import { userStateStore } from './zustandStore';
 
 const pageStyles = StyleSheet.create({
   container: {
@@ -15,7 +18,18 @@ const pageStyles = StyleSheet.create({
   },
 });
 
-const LoginScreen = () => {
+type RootStackParamList = {
+  Login: undefined;
+  Home: undefined;
+  List: undefined;
+};
+
+type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
+
+const LoginScreen = ({ navigation }: Props) => {
+  const username: string = userStateStore((state) => state.username);
+  const setUserName = userStateStore((state) => state.setUserName);
+
   return (
     <View style={pageStyles.container}>
       <Text>Username</Text>
@@ -24,6 +38,10 @@ const LoginScreen = () => {
         clearButtonMode='always'
         placeholder='ex. dope_gecko23'
         placeholderTextColor={'grey'}
+        onChange={(event) => {
+          setUserName(event.nativeEvent.text);
+        }}
+        value={username}
       />
       <Text>Password</Text>
       <TextInput
