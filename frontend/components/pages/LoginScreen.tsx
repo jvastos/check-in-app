@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, TextInput, StyleSheet, Text } from 'react-native';
+import { View, TextInput, StyleSheet, Text, Button } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { userStateStore } from './zustandStore';
@@ -70,7 +70,9 @@ const LoginScreen = ({ navigation }: Props) => {
         value={username}
       />
       {username !== '' && (
-        <Text>{usernameIsTaken ? 'Username is taken.' : 'Cool. Username is NOT taken.'}</Text>
+        <Text>
+          {usernameIsTaken ? 'Username already in use.' : `That's a new username. Cool. `}
+        </Text>
       )}
       <Text>Password</Text>
       <TextInput
@@ -79,6 +81,7 @@ const LoginScreen = ({ navigation }: Props) => {
         placeholder='ex. n!rv@na91'
         placeholderTextColor={'grey'}
       />
+      <Button title={usernameIsTaken ? 'Login' : 'Signup'} />
     </View>
   );
 };
