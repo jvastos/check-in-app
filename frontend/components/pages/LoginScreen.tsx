@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, TextInput, StyleSheet, Text, Button } from 'react-native';
+import { View, TextInput, StyleSheet, Text, Button, Alert } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { userStateStore } from './zustandStore';
@@ -45,12 +45,19 @@ const LoginScreen = ({ navigation }: Props) => {
 
   useEffect(() => {
     const checkUsernameAvailability = async (username: string) => {
-      const allUsers = await request<User[]>('http://localhost:5000/allusers');
-      const allUsernames = allUsers.map((i) => i.username);
-      if (allUsernames.includes(username)) {
-        setUsernameIsTaken(true);
-      } else {
-        setUsernameIsTaken(false);
+      try {
+        const allUsers = await request<User[]>('http://localhost:5000/allusers');
+        const allUsernames = allUsers.map((i) => i.username);
+        if (allUsernames.includes(username)) {
+          setUsernameIsTaken(true);
+        } else {
+          setUsernameIsTaken(false);
+        }
+      } catch (error) {
+        Alert.alert('Error', `${error}`, [
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
+        ]);
+        console.log('Somehting went wrong fetching the users from the DB.', error);
       }
     };
     checkUsernameAvailability(username);
