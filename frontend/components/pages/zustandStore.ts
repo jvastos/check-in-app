@@ -8,6 +8,8 @@ interface UserState {
   setCheckedInUsers: (checkedInUsers: string[]) => void;
   username: string;
   setUserName: (username: string) => void;
+  userId: string;
+  setUserId: (userId: string) => void;
   password: string;
   setPassword: (username: string) => void;
   usernameIsTaken: boolean;
@@ -23,6 +25,8 @@ export const userStateStore = create<UserState>()(
       setCheckedInUsers: (checkedInUsers) => set({ checkedInUsers: checkedInUsers }),
       username: '',
       setUserName: (username) => set({ username: username }),
+      userId: '',
+      setUserId: (userId) => set({ userId: userId }),
       password: '',
       setPassword: (password) => set({ password: password }),
       usernameIsTaken: false,

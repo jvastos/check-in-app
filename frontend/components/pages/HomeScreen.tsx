@@ -21,10 +21,10 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const HomeScreen = ({ navigation }: Props) => {
+  const username: string = userStateStore((state) => state.username);
+  const userId: string = userStateStore((state) => state.userId);
   const checkInStatus: boolean = userStateStore((state) => state.isCheckedIn);
   const setIsCheckedIn = userStateStore((state) => state.setIsCheckedIn);
-
-  const userId = '638df42e6ae18e0e039a2aa0';
 
   const updateUserCheckInStatus = async (checkInStatus: boolean) => {
     try {
@@ -46,6 +46,7 @@ const HomeScreen = ({ navigation }: Props) => {
 
   return (
     <View style={styles.container}>
+      <h2>Hey {username} </h2>
       <Text>Your status: {checkInStatus === true ? 'Checked in' : 'Checked out'}</Text>
       <Button
         title={checkInStatus === true ? 'Check out' : 'Check in'}

@@ -40,6 +40,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 const LoginScreen = ({ navigation }: Props) => {
   const username: string = userStateStore((state) => state.username);
   const setUserName = userStateStore((state) => state.setUserName);
+  const setUserId = userStateStore((state) => state.setUserId);
   const password: string = userStateStore((state) => state.password);
   const setPassword = userStateStore((state) => state.setPassword);
   const usernameIsTaken: boolean = userStateStore((state) => state.usernameIsTaken);
@@ -75,7 +76,7 @@ const LoginScreen = ({ navigation }: Props) => {
       password: password,
     };
     try {
-      await fetch('http://localhost:5000/users', {
+      const res = await fetch('http://localhost:5000/users', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -83,9 +84,12 @@ const LoginScreen = ({ navigation }: Props) => {
         },
         body: JSON.stringify(userInfo),
       });
+      const { _id } = await res.json();
+      setUserId(_id);
     } catch (error) {
       console.log('Something went wrong while trying to create a new user in the DB.', error);
     }
+    navigation.navigate('Home');
   };
 
   return (
