@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb';
+import bcrypt from 'bcrypt';
 
 const userHandlers = {
   getAllUsers: (db: any) => async (req: any, res: any) => {
@@ -11,7 +12,9 @@ const userHandlers = {
       password: req.body.password,
     };
     const user = await db.collection('users').findOne({ username: `${reqUser.username}` });
-    if (user.password === reqUser.password) {
+
+    const comparedPassword = await bcrypt.compare(req.body.password, user.password);
+    if (comparedPassword) {
       res.status(200).send(user);
     } else {
       res.status(403).send('Password doesn not match.');
@@ -27,8 +30,11 @@ const userHandlers = {
     res.status(200).send(foundUser);
   },
   createUser: (db: any) => async (req: any, res: any) => {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    console.log(hashedPassword);
     const user = {
-      ...req.body,
+      username: req.body.username,
+      password: hashedPassword,
       isCheckedIn: false,
     };
 

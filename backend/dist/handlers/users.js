@@ -8,8 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongodb_1 = require("mongodb");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const userHandlers = {
     getAllUsers: (db) => (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const users = yield db.collection('users').find({}).toArray();
@@ -21,7 +25,8 @@ const userHandlers = {
             password: req.body.password,
         };
         const user = yield db.collection('users').findOne({ username: `${reqUser.username}` });
-        if (user.password === reqUser.password) {
+        const comparedPassword = yield bcrypt_1.default.compare(req.body.password, user.password);
+        if (comparedPassword) {
             res.status(200).send(user);
         }
         else {
@@ -37,7 +42,13 @@ const userHandlers = {
         res.status(200).send(foundUser);
     }),
     createUser: (db) => (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const user = Object.assign(Object.assign({}, req.body), { isCheckedIn: false });
+        const hashedPassword = yield bcrypt_1.default.hash(req.body.password, 10);
+        console.log(hashedPassword);
+        const user = {
+            username: req.body.username,
+            password: hashedPassword,
+            isCheckedIn: false,
+        };
         const foundUser = yield db.collection('users').insertOne(user);
         res.status(200).send(user);
     }),
