@@ -21,7 +21,6 @@ const userHandlers = {
             password: req.body.password,
         };
         const user = yield db.collection('users').findOne({ username: `${reqUser.username}` });
-        console.log(user);
         if (user.password === reqUser.password) {
             res.status(200).send(user);
         }

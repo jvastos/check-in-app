@@ -28,10 +28,26 @@ interface User {
   username: string;
   password: string;
   isCheckedIn: boolean;
+  _id: string;
 }
 
 async function allUsersRequest<T>(url: string): Promise<T> {
   const response = await fetch(url);
+  return await response.json();
+}
+
+async function userLoginRequest<T>(url: string, username: string, password: string): Promise<T> {
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json;charset=UTF-8',
+    },
+    body: JSON.stringify({
+      username: username,
+      password: password,
+    }),
+  });
   return await response.json();
 }
 
@@ -40,6 +56,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 const LoginScreen = ({ navigation }: Props) => {
   const username: string = userStateStore((state) => state.username);
   const setUserName = userStateStore((state) => state.setUserName);
+  const userId: string = userStateStore((state) => state.userId);
   const setUserId = userStateStore((state) => state.setUserId);
   const password: string = userStateStore((state) => state.password);
   const setPassword = userStateStore((state) => state.setPassword);
@@ -67,7 +84,19 @@ const LoginScreen = ({ navigation }: Props) => {
   });
 
   const login = async (username: string, password: string) => {
-    console.log('login', username, password);
+    try {
+      const user = await userLoginRequest<User>(
+        'http://localhost:5000/logInUser',
+        username,
+        password
+      );
+      if (user.username === username) {
+        setUserId(user._id);
+        navigation.navigate('Home');
+      }
+    } catch (error) {
+      console.log('Somehting went wrong logging in the user.', error);
+    }
   };
 
   const signup = async (username: string, password: string) => {

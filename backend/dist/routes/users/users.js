@@ -12,9 +12,9 @@ const logInUser = users_1.default.logInUser;
 function userRoutes(db) {
     const router = (0, express_1.Router)();
     router.get('/allusers', getAllUsers(db));
-    router.get('/logInUser', logInUser(db));
     router.patch('/:userId/:checkInStatus', updateUser(db));
     router.post('/users', createUser(db));
+    router.post('/logInUser', logInUser(db));
     return router;
 }
 exports.default = userRoutes;
