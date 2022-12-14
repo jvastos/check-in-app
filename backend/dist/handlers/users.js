@@ -15,6 +15,20 @@ const userHandlers = {
         const users = yield db.collection('users').find({}).toArray();
         res.status(200).send(users);
     }),
+    logInUser: (db) => (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const reqUser = {
+            username: req.body.username,
+            password: req.body.password,
+        };
+        const user = yield db.collection('users').findOne({ username: `${reqUser.username}` });
+        console.log(user);
+        if (user.password === reqUser.password) {
+            res.status(200).send(user);
+        }
+        else {
+            res.status(403).send('Password doesn not match.');
+        }
+    }),
     updateUser: (db) => (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const userId = req.params.userId;
         const checkInStatus = req.params.checkInStatus === 'true';

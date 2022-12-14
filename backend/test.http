@@ -1,9 +1,21 @@
 ###Get all users
 GET http://localhost:5000/allusers HTTP/1.1
 
+
+###Login a user
+GET  http://localhost:5000/logInUser HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "crazy_goat35",
+    "password": "abc123"
+}
+
+
 ###Update user checkInStatus
 PATCH  http://localhost:5000/638df42e6ae18e0e039a2aa0/true HTTP/1.1
 Content-Type: application/json
+
 
 ###Create a user
 POST  http://localhost:5000/users HTTP/1.1

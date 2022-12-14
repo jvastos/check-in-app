@@ -5,6 +5,18 @@ const userHandlers = {
     const users = await db.collection('users').find({}).toArray();
     res.status(200).send(users);
   },
+  logInUser: (db: any) => async (req: any, res: any) => {
+    const reqUser = {
+      username: req.body.username,
+      password: req.body.password,
+    };
+    const user = await db.collection('users').findOne({ username: `${reqUser.username}` });
+    if (user.password === reqUser.password) {
+      res.status(200).send(user);
+    } else {
+      res.status(403).send('Password doesn not match.');
+    }
+  },
   updateUser: (db: any) => async (req: any, res: any) => {
     const userId = req.params.userId;
     const checkInStatus = req.params.checkInStatus === 'true';
