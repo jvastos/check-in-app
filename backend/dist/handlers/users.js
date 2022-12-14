@@ -24,10 +24,9 @@ const userHandlers = {
         res.status(200).send(foundUser);
     }),
     createUser: (db) => (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log(req.body);
         const user = Object.assign(Object.assign({}, req.body), { isCheckedIn: false });
-        const foundUser = yield db.collection('users').insert(user);
-        res.status(200).send(req.body);
+        const foundUser = yield db.collection('users').insertOne(user);
+        res.status(200).send(user);
     }),
 };
 exports.default = userHandlers;

@@ -20,8 +20,8 @@ const userHandlers = {
       isCheckedIn: false,
     };
 
-    const foundUser = await db.collection('users').insert(user);
-    res.status(200).send(req.body);
+    const foundUser = await db.collection('users').insertOne(user);
+    res.status(200).send(user);
   },
 };
 

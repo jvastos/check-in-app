@@ -30,7 +30,7 @@ interface User {
   isCheckedIn: boolean;
 }
 
-async function request<T>(url: string): Promise<T> {
+async function allUsersRequest<T>(url: string): Promise<T> {
   const response = await fetch(url);
   return await response.json();
 }
@@ -40,13 +40,15 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 const LoginScreen = ({ navigation }: Props) => {
   const username: string = userStateStore((state) => state.username);
   const setUserName = userStateStore((state) => state.setUserName);
+  const password: string = userStateStore((state) => state.password);
+  const setPassword = userStateStore((state) => state.setPassword);
   const usernameIsTaken: boolean = userStateStore((state) => state.usernameIsTaken);
   const setUsernameIsTaken = userStateStore((state) => state.setUsernameIsTaken);
 
   useEffect(() => {
     const checkUsernameAvailability = async (username: string) => {
       try {
-        const allUsers = await request<User[]>('http://localhost:5000/allusers');
+        const allUsers = await allUsersRequest<User[]>('http://localhost:5000/allusers');
         const allUsernames = allUsers.map((i) => i.username);
         if (allUsernames.includes(username)) {
           setUsernameIsTaken(true);
@@ -63,6 +65,29 @@ const LoginScreen = ({ navigation }: Props) => {
     checkUsernameAvailability(username);
   });
 
+  const login = async (username: string, password: string) => {
+    console.log('login', username, password);
+  };
+
+  const signup = async (username: string, password: string) => {
+    const userInfo = {
+      username: username,
+      password: password,
+    };
+    try {
+      await fetch('http://localhost:5000/users', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userInfo),
+      });
+    } catch (error) {
+      console.log('Something went wrong while trying to create a new user in the DB.', error);
+    }
+  };
+
   return (
     <View style={pageStyles.container}>
       <Text>Username</Text>
@@ -75,6 +100,9 @@ const LoginScreen = ({ navigation }: Props) => {
           setUserName(event.nativeEvent.text);
         }}
         value={username}
+        autoComplete='username'
+        autoCorrect={false}
+        selectTextOnFocus={true}
       />
       {username !== '' && (
         <Text>
@@ -87,8 +115,27 @@ const LoginScreen = ({ navigation }: Props) => {
         clearButtonMode='always'
         placeholder='ex. n!rv@na91'
         placeholderTextColor={'grey'}
+        autoCorrect={false}
+        secureTextEntry={true}
+        maxLength={12}
+        selectTextOnFocus={true}
+        value={password}
+        onChange={(event) => {
+          setPassword(event.nativeEvent.text);
+        }}
       />
-      <Button title={usernameIsTaken ? 'Login' : 'Signup'} />
+      <Button
+        title={usernameIsTaken ? 'Login' : 'Signup'}
+        onPress={
+          usernameIsTaken
+            ? () => {
+                login(username, password);
+              }
+            : () => {
+                signup(username, password);
+              }
+        }
+      />
     </View>
   );
 };
