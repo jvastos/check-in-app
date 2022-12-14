@@ -4,6 +4,8 @@ import { devtools } from 'zustand/middleware';
 interface UserState {
   isCheckedIn: boolean;
   setIsCheckedIn: () => void;
+  userIsLoggedIn: boolean;
+  setUserIsLoggedIn: (userLogInStatus: boolean) => void;
   checkedInUsers: string[];
   setCheckedInUsers: (checkedInUsers: string[]) => void;
   username: string;
@@ -14,6 +16,10 @@ interface UserState {
   setPassword: (username: string) => void;
   usernameIsTaken: boolean;
   setUsernameIsTaken: (usernameStatus: boolean) => void;
+  usernameStatusMessage: string;
+  setUsernameStatusMessage: (message: string) => void;
+  passwordStatusMessage: string;
+  setPasswordStatusMessage: (message: string) => void;
 }
 
 export const userStateStore = create<UserState>()(
@@ -21,6 +27,8 @@ export const userStateStore = create<UserState>()(
     (set) => ({
       isCheckedIn: false,
       setIsCheckedIn: () => set((state) => ({ isCheckedIn: !state.isCheckedIn })),
+      userIsLoggedIn: false,
+      setUserIsLoggedIn: (userLogInStatus) => set({ userIsLoggedIn: userLogInStatus }),
       checkedInUsers: [],
       setCheckedInUsers: (checkedInUsers) => set({ checkedInUsers: checkedInUsers }),
       username: '',
@@ -31,6 +39,10 @@ export const userStateStore = create<UserState>()(
       setPassword: (password) => set({ password: password }),
       usernameIsTaken: false,
       setUsernameIsTaken: (usernameStatus) => set({ usernameIsTaken: usernameStatus }),
+      usernameStatusMessage: '',
+      setUsernameStatusMessage: (message) => set({ usernameStatusMessage: message }),
+      passwordStatusMessage: '',
+      setPasswordStatusMessage: (message) => set({ passwordStatusMessage: message }),
     }),
     { name: 'user-state-store' }
   )

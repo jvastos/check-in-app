@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, TextInput, StyleSheet, Text, Button, Alert } from 'react-native';
+import { View, TextInput, StyleSheet, Text, Button, Alert, Modal } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { userStateStore } from './zustandStore';
@@ -15,6 +15,11 @@ const pageStyles = StyleSheet.create({
     marginVertical: 10,
     borderWidth: 1,
     padding: 10,
+  },
+  minorText: {
+    fontSize: 12,
+    color: 'grey',
+    marginVertical: 10,
   },
 });
 
@@ -54,14 +59,18 @@ async function userLoginRequest<T>(url: string, username: string, password: stri
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const LoginScreen = ({ navigation }: Props) => {
+  const setUserIsLoggedIn = userStateStore((state) => state.setUserIsLoggedIn);
   const username: string = userStateStore((state) => state.username);
   const setUserName = userStateStore((state) => state.setUserName);
-  const userId: string = userStateStore((state) => state.userId);
   const setUserId = userStateStore((state) => state.setUserId);
   const password: string = userStateStore((state) => state.password);
   const setPassword = userStateStore((state) => state.setPassword);
   const usernameIsTaken: boolean = userStateStore((state) => state.usernameIsTaken);
   const setUsernameIsTaken = userStateStore((state) => state.setUsernameIsTaken);
+  const usernameStatusMessage: string = userStateStore((state) => state.usernameStatusMessage);
+  const setUsernameStatusMessage = userStateStore((state) => state.setUsernameStatusMessage);
+  const passwordStatusMessage: string = userStateStore((state) => state.passwordStatusMessage);
+  const setPasswordStatusMessage = userStateStore((state) => state.setPasswordStatusMessage);
 
   useEffect(() => {
     const checkUsernameAvailability = async (username: string) => {
@@ -70,8 +79,10 @@ const LoginScreen = ({ navigation }: Props) => {
         const allUsernames = allUsers.map((i) => i.username);
         if (allUsernames.includes(username)) {
           setUsernameIsTaken(true);
+          setUsernameStatusMessage('Username is in use (Is that you? If yes, go on and log in.)');
         } else {
           setUsernameIsTaken(false);
+          setUsernameStatusMessage('');
         }
       } catch (error) {
         Alert.alert('Error', `${error}`, [
@@ -84,18 +95,25 @@ const LoginScreen = ({ navigation }: Props) => {
   });
 
   const login = async (username: string, password: string) => {
-    try {
-      const user = await userLoginRequest<User>(
-        'http://localhost:5000/logInUser',
-        username,
-        password
-      );
-      if (user.username === username) {
-        setUserId(user._id);
-        navigation.navigate('Home');
+    if (username !== '' && password !== '') {
+      try {
+        const user = await userLoginRequest<User>(
+          'http://localhost:5000/logInUser',
+          username,
+          password
+        );
+        if (user.username === username) {
+          setUserId(user._id);
+          setUserIsLoggedIn(true);
+          navigation.navigate('Home');
+        }
+      } catch (error) {
+        Alert.alert('Error', `${error}`, [
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
+        ]);
+        setPasswordStatusMessage('Please double-check your password and try again.');
+        console.log('Somehting went wrong logging in the user.', error);
       }
-    } catch (error) {
-      console.log('Somehting went wrong logging in the user.', error);
     }
   };
 
@@ -130,18 +148,14 @@ const LoginScreen = ({ navigation }: Props) => {
         placeholder='ex. dope_gecko23'
         placeholderTextColor={'grey'}
         onChange={(event) => {
-          setUserName(event.nativeEvent.text);
+          setUserName(event.nativeEvent.text.toLowerCase());
         }}
         value={username}
         autoComplete='username'
         autoCorrect={false}
         selectTextOnFocus={true}
       />
-      {username !== '' && (
-        <Text>
-          {usernameIsTaken ? 'Username already in use.' : `That's a new username. Cool. `}
-        </Text>
-      )}
+      <Text style={pageStyles.minorText}>{usernameStatusMessage}</Text>
       <Text>Password</Text>
       <TextInput
         style={pageStyles.input}
@@ -156,7 +170,11 @@ const LoginScreen = ({ navigation }: Props) => {
         onChange={(event) => {
           setPassword(event.nativeEvent.text);
         }}
+        onFocus={() => {
+          setPasswordStatusMessage('');
+        }}
       />
+      <Text style={pageStyles.minorText}>{passwordStatusMessage}</Text>
       <Button
         title={usernameIsTaken ? 'Login' : 'Signup'}
         onPress={
@@ -169,6 +187,9 @@ const LoginScreen = ({ navigation }: Props) => {
               }
         }
       />
+      <Text style={pageStyles.minorText}>
+        If you haven't created a user before, go ahead and create one by tiping in the fields above.
+      </Text>
     </View>
   );
 };
