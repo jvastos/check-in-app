@@ -30,6 +30,8 @@ function main() {
         });
     });
 }
+process.on('SIGINT', () => process.exit(0));
+process.on('SIGTERM', () => process.exit(0));
 main().catch((err) => {
     console.error('Something went wrong running the main fnc', err);
     process.exit(1);

@@ -49,7 +49,11 @@ const HomeScreen = ({ navigation }: Props) => {
     updateUserCheckInStatus(checkInStatus);
   }, [checkInStatus]);
 
-  return userIsLoggedIn ? (
+  useEffect(() => {
+    !userIsLoggedIn && navigation.navigate('Login');
+  }, [userIsLoggedIn]);
+
+  return (
     <View style={screenStyles.container}>
       <h2>Hey {username} </h2>
       <Text>Your status: {checkInStatus === true ? 'Checked in' : 'Checked out'}</Text>
@@ -76,8 +80,6 @@ const HomeScreen = ({ navigation }: Props) => {
         />
       </View>
     </View>
-  ) : (
-    navigation.navigate('Login')
   );
 };
 
