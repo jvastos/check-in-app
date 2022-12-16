@@ -114,6 +114,8 @@ const LoginScreen = ({ navigation }: Props) => {
         setPasswordStatusMessage('Please double-check your password and try again.');
         console.log('Somehting went wrong logging in the user.', error);
       }
+    } else {
+      setPasswordStatusMessage('Please double check your login credentials and try again.');
     }
   };
 
@@ -122,21 +124,26 @@ const LoginScreen = ({ navigation }: Props) => {
       username: username,
       password: password,
     };
-    try {
-      const res = await fetch('http://localhost:5000/users', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userInfo),
-      });
-      const { _id } = await res.json();
-      setUserId(_id);
-    } catch (error) {
-      console.log('Something went wrong while trying to create a new user in the DB.', error);
+    if (username !== '' && password !== '') {
+      try {
+        const res = await fetch('http://localhost:5000/users', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userInfo),
+        });
+        const { _id } = await res.json();
+        setUserId(_id);
+        setUserIsLoggedIn(true);
+        navigation.navigate('Home');
+      } catch (error) {
+        console.log('Something went wrong while trying to create a new user in the DB.', error);
+      }
+    } else {
+      setPasswordStatusMessage('Please double check your login credentials and try again.');
     }
-    navigation.navigate('Home');
   };
 
   return (
