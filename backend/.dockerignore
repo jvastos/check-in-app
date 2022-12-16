@@ -1,0 +1,7 @@
+# flyctl launch added from .gitignore
+#Node Modules
+**/node_modules
+
+#Environmental variables
+**/.envrc
+**/.nvmrc
