@@ -3,12 +3,15 @@ import { StyleSheet, View, Button, Text } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { userStateStore } from './zustandStore';
 
-const styles = StyleSheet.create({
+const screenStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  button: {
+    marginVertical: 10,
   },
 });
 
@@ -25,6 +28,8 @@ const HomeScreen = ({ navigation }: Props) => {
   const userId: string = userStateStore((state) => state.userId);
   const checkInStatus: boolean = userStateStore((state) => state.isCheckedIn);
   const setIsCheckedIn = userStateStore((state) => state.setIsCheckedIn);
+  const userIsLoggedIn: boolean = userStateStore((state) => state.userIsLoggedIn);
+  const setUserIsLoggedIn = userStateStore((state) => state.setUserIsLoggedIn);
 
   const updateUserCheckInStatus = async (checkInStatus: boolean) => {
     try {
@@ -44,21 +49,35 @@ const HomeScreen = ({ navigation }: Props) => {
     updateUserCheckInStatus(checkInStatus);
   }, [checkInStatus]);
 
-  return (
-    <View style={styles.container}>
+  return userIsLoggedIn ? (
+    <View style={screenStyles.container}>
       <h2>Hey {username} </h2>
       <Text>Your status: {checkInStatus === true ? 'Checked in' : 'Checked out'}</Text>
-      <Button
-        title={checkInStatus === true ? 'Check out' : 'Check in'}
-        onPress={setIsCheckedIn}
-      />
-      <Button
-        title='Check The Wall'
-        onPress={() => {
-          navigation.navigate('List');
-        }}
-      />
+      <View style={screenStyles.button}>
+        <Button
+          title={checkInStatus === true ? 'Check out' : 'Check in'}
+          onPress={setIsCheckedIn}
+        />
+      </View>
+      <View style={screenStyles.button}>
+        <Button
+          title='Check The Wall'
+          onPress={() => {
+            navigation.navigate('List');
+          }}
+        />
+      </View>
+      <View style={screenStyles.button}>
+        <Button
+          title='Logout'
+          onPress={() => {
+            setUserIsLoggedIn(false);
+          }}
+        />
+      </View>
     </View>
+  ) : (
+    navigation.navigate('Login')
   );
 };
 
