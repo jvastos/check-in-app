@@ -8,6 +8,9 @@ const screenStyles = StyleSheet.create({
   container: {
     padding: 20,
   },
+  name: {
+    paddingVertical: 10,
+  },
 });
 
 type RootStackParamList = {
@@ -46,9 +49,16 @@ const ListScreen = ({ navigation }: Props) => {
   return (
     <View style={screenStyles.container}>
       {checkedInUsers[0] !== undefined ? (
-        checkedInUsers.map((i) => <p key={Math.random()}>{i}</p>)
+        checkedInUsers.map((i) => (
+          <Text
+            style={screenStyles.name}
+            key={Math.random()}
+          >
+            {i}
+          </Text>
+        ))
       ) : (
-        <Text>Sad. It seems like no one is on the wall right now.</Text>
+        <Text style={screenStyles.name}>Sad. It seems like no one is on the wall right now.</Text>
       )}
     </View>
   );
