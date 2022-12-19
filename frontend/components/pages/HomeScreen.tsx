@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { StyleSheet, View, Button, Text } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { userStateStore } from './zustandStore';
+import { API_URL } from '@env';
 
 const screenStyles = StyleSheet.create({
   container: {
@@ -33,7 +34,7 @@ const HomeScreen = ({ navigation }: Props) => {
 
   const updateUserCheckInStatus = async (checkInStatus: boolean) => {
     try {
-      await fetch(`${process.env.API_URL}/${userId}/${checkInStatus}`, {
+      await fetch(`${API_URL}${userId}/${checkInStatus}`, {
         method: 'PATCH',
         headers: {
           Accept: 'application/json',

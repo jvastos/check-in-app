@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { userStateStore } from './zustandStore';
+import { API_URL } from '@env';
 
 type RootStackParamList = {
   Login: undefined;
@@ -28,7 +29,7 @@ const ListScreen = ({ navigation }: Props) => {
 
   useEffect(() => {
     const fetchAllUsers = async () => {
-      const allUsers = await request<User[]>(`${process.env.API_URL}/allusers`);
+      const allUsers = await request<User[]>(`${API_URL}allusers`);
       const newUsers = allUsers.filter((i) => i.isCheckedIn === true).map((i) => `${i.username}`);
 
       setCheckedInUsers(newUsers);

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, TextInput, StyleSheet, Text, Button, Alert, Modal } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-
+import { API_URL } from '@env';
 import { userStateStore } from './zustandStore';
 
 const pageStyles = StyleSheet.create({
@@ -75,7 +75,7 @@ const LoginScreen = ({ navigation }: Props) => {
   useEffect(() => {
     const checkUsernameAvailability = async (username: string) => {
       try {
-        const allUsers = await allUsersRequest<User[]>(`${process.env.API_URL}/allusers`);
+        const allUsers = await allUsersRequest<User[]>(`${API_URL}allusers`);
         const allUsernames = allUsers.map((i) => i.username);
         if (allUsernames.includes(username)) {
           setUsernameIsTaken(true);
@@ -97,11 +97,7 @@ const LoginScreen = ({ navigation }: Props) => {
   const login = async (username: string, password: string) => {
     if (username !== '' && password !== '') {
       try {
-        const user = await userLoginRequest<User>(
-          `${process.env.API_URL}/logInUser`,
-          username,
-          password
-        );
+        const user = await userLoginRequest<User>(`${API_URL}logInUser`, username, password);
         if (user.username === username) {
           setUserId(user._id);
           setUserIsLoggedIn(true);
@@ -126,7 +122,7 @@ const LoginScreen = ({ navigation }: Props) => {
     };
     if (username !== '' && password !== '') {
       try {
-        const res = await fetch(`${process.env.API_URL}/users`, {
+        const res = await fetch(`${API_URL}users`, {
           method: 'POST',
           headers: {
             Accept: 'application/json',
