@@ -11,6 +11,10 @@ const screenStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  greeting: {
+    fontWeight: '900',
+    fontSize: 20,
+  },
   button: {
     marginVertical: 10,
   },
@@ -56,7 +60,7 @@ const HomeScreen = ({ navigation }: Props) => {
 
   return (
     <View style={screenStyles.container}>
-      <h2>Hey {username} </h2>
+      <Text style={screenStyles.greeting}>Hey {username} </Text>
       <Text>Your status: {checkInStatus === true ? 'Checked in' : 'Checked out'}</Text>
       <View style={screenStyles.button}>
         <Button

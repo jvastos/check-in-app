@@ -1,8 +1,14 @@
 import React, { useEffect } from 'react';
-import { View } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { userStateStore } from './zustandStore';
 import { API_URL } from '@env';
+
+const screenStyles = StyleSheet.create({
+  container: {
+    padding: 20,
+  },
+});
 
 type RootStackParamList = {
   Login: undefined;
@@ -38,11 +44,11 @@ const ListScreen = ({ navigation }: Props) => {
   }, []);
 
   return (
-    <View>
+    <View style={screenStyles.container}>
       {checkedInUsers[0] !== undefined ? (
         checkedInUsers.map((i) => <p key={Math.random()}>{i}</p>)
       ) : (
-        <p>Sad. It seems like no one is on the wall right now.</p>
+        <Text>Sad. It seems like no one is on the wall right now.</Text>
       )}
     </View>
   );
