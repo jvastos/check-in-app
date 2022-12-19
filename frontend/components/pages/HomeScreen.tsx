@@ -33,7 +33,7 @@ const HomeScreen = ({ navigation }: Props) => {
 
   const updateUserCheckInStatus = async (checkInStatus: boolean) => {
     try {
-      await fetch(`http://localhost:5000/${userId}/${checkInStatus}`, {
+      await fetch(`${process.env.API_URL}/${userId}/${checkInStatus}`, {
         method: 'PATCH',
         headers: {
           Accept: 'application/json',

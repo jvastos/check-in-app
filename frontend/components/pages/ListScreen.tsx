@@ -28,7 +28,7 @@ const ListScreen = ({ navigation }: Props) => {
 
   useEffect(() => {
     const fetchAllUsers = async () => {
-      const allUsers = await request<User[]>('http://localhost:5000/allusers');
+      const allUsers = await request<User[]>(`${process.env.API_URL}/allusers`);
       const newUsers = allUsers.filter((i) => i.isCheckedIn === true).map((i) => `${i.username}`);
 
       setCheckedInUsers(newUsers);

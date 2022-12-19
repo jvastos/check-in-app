@@ -75,7 +75,7 @@ const LoginScreen = ({ navigation }: Props) => {
   useEffect(() => {
     const checkUsernameAvailability = async (username: string) => {
       try {
-        const allUsers = await allUsersRequest<User[]>('http://localhost:5000/allusers');
+        const allUsers = await allUsersRequest<User[]>(`${process.env.API_URL}/allusers`);
         const allUsernames = allUsers.map((i) => i.username);
         if (allUsernames.includes(username)) {
           setUsernameIsTaken(true);
@@ -98,7 +98,7 @@ const LoginScreen = ({ navigation }: Props) => {
     if (username !== '' && password !== '') {
       try {
         const user = await userLoginRequest<User>(
-          'http://localhost:5000/logInUser',
+          `${process.env.API_URL}/logInUser`,
           username,
           password
         );
@@ -126,7 +126,7 @@ const LoginScreen = ({ navigation }: Props) => {
     };
     if (username !== '' && password !== '') {
       try {
-        const res = await fetch('http://localhost:5000/users', {
+        const res = await fetch(`${process.env.API_URL}/users`, {
           method: 'POST',
           headers: {
             Accept: 'application/json',
