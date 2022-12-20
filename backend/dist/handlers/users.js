@@ -25,12 +25,12 @@ const userHandlers = {
             password: req.body.password,
         };
         const user = yield db.collection('users').findOne({ username: `${reqUser.username}` });
-        const comparedPassword = yield bcrypt_1.default.compare(req.body.password, user.password);
-        if (comparedPassword) {
+        const passwordMatch = yield bcrypt_1.default.compare(req.body.password, user.password);
+        if (passwordMatch) {
             res.status(200).send(user);
         }
         else {
-            res.status(403).send('Password doesn not match.');
+            res.status(403).send(`Password doesn't match.`);
         }
     }),
     updateUser: (db) => (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -38,8 +38,10 @@ const userHandlers = {
         const checkInStatus = req.params.checkInStatus === 'true';
         const foundUser = yield db
             .collection('users')
-            .updateOne({ _id: new mongodb_1.ObjectId(`${userId}`) }, { $set: { isCheckedIn: checkInStatus } });
-        res.status(200).send(foundUser);
+            .findOneAndUpdate({ _id: new mongodb_1.ObjectId(`${userId}`) }, { $set: { isCheckedIn: checkInStatus } }, { returnDocument: 'after' }, (err, documents) => {
+            res.send({ error: err, affected: documents });
+            res.status(200);
+        });
     }),
     createUser: (db) => (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const hashedPassword = yield bcrypt_1.default.hash(req.body.password, 10);

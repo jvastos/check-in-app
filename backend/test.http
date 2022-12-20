@@ -3,7 +3,7 @@ GET https://checkin-app-backend.fly.dev/allusers HTTP/1.1
 
 
 ###Update user checkInStatus
-PATCH  http://localhost:5000/638df42e6ae18e0e039a2aa0/true HTTP/1.1
+PATCH  http://localhost:5000/639c327af1f7029f2ebd29ee/true HTTP/1.1
 Content-Type: application/json
 
 

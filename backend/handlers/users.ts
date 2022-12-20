@@ -13,11 +13,11 @@ const userHandlers = {
     };
     const user = await db.collection('users').findOne({ username: `${reqUser.username}` });
 
-    const comparedPassword = await bcrypt.compare(req.body.password, user.password);
-    if (comparedPassword) {
+    const passwordMatch = await bcrypt.compare(req.body.password, user.password);
+    if (passwordMatch) {
       res.status(200).send(user);
     } else {
-      res.status(403).send('Password doesn not match.');
+      res.status(403).send(`Password doesn't match.`);
     }
   },
   updateUser: (db: any) => async (req: any, res: any) => {
@@ -26,8 +26,15 @@ const userHandlers = {
 
     const foundUser = await db
       .collection('users')
-      .updateOne({ _id: new ObjectId(`${userId}`) }, { $set: { isCheckedIn: checkInStatus } });
-    res.status(200).send(foundUser);
+      .findOneAndUpdate(
+        { _id: new ObjectId(`${userId}`) },
+        { $set: { isCheckedIn: checkInStatus } },
+        { returnDocument: 'after' },
+        (err: any, documents: any) => {
+          res.send({ error: err, affected: documents });
+          res.status(200);
+        }
+      );
   },
   createUser: (db: any) => async (req: any, res: any) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
