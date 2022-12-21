@@ -17,7 +17,6 @@ describe('Testing that API:', () => {
     const allUsers = await fetch('https://checkin-app-backend.fly.dev/allusers');
     const parsedAllUsers = await allUsers.json();
     const randomUser = parsedAllUsers[0];
-    console.log('random user original state: ', randomUser);
 
     try {
       const checkInUserRes = await fetch(
@@ -31,7 +30,6 @@ describe('Testing that API:', () => {
         }
       );
       const checkedInUser = await checkInUserRes.json();
-      console.log('random user state after update: ', checkedInUser.affected.value);
       expect(checkInUserRes.status).toBe(200);
       expect(checkedInUser.affected.value.isCheckedIn).toBe(!randomUser.isCheckedIn);
     } finally {

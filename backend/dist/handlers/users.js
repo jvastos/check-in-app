@@ -45,7 +45,6 @@ const userHandlers = {
     }),
     createUser: (db) => (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const hashedPassword = yield bcrypt_1.default.hash(req.body.password, 10);
-        console.log(hashedPassword);
         const user = {
             username: req.body.username,
             password: hashedPassword,

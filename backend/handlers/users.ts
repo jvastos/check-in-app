@@ -38,7 +38,6 @@ const userHandlers = {
   },
   createUser: (db: any) => async (req: any, res: any) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    console.log(hashedPassword);
     const user = {
       username: req.body.username,
       password: hashedPassword,
