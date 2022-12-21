@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, TextInput, StyleSheet, Text, Button, Alert, Modal } from 'react-native';
+import { View, TextInput, StyleSheet, Text, Button, Alert } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { API_URL } from '@env';
 import { userStateStore } from './zustandStore';
@@ -151,12 +151,13 @@ const LoginScreen = ({ navigation }: Props) => {
         placeholder='ex. dope_gecko23'
         placeholderTextColor={'grey'}
         onChange={(event) => {
-          setUserName(event.nativeEvent.text.toLowerCase());
+          setUserName(event.nativeEvent.text);
         }}
         value={username}
         autoComplete='username'
         autoCorrect={false}
         selectTextOnFocus={true}
+        autoCapitalize='none'
       />
       <Text style={pageStyles.minorText}>{usernameStatusMessage}</Text>
       <Text>Password</Text>
