@@ -50,8 +50,8 @@ describe('Testing that API:', () => {
     it('Logs in a user.', () => __awaiter(void 0, void 0, void 0, function* () {
         const allUsers = yield fetch('https://checkin-app-backend.fly.dev/allusers');
         const parsedAllUsers = yield allUsers.json();
-        const randomUser = parsedAllUsers[5];
-        console.log('randomUser: ', randomUser);
+        const jUser = parsedAllUsers.find((i) => i.username === 'j');
+        console.log('jUser: ', jUser);
         const body = {
             username: 'j',
             password: 'j',
@@ -68,7 +68,7 @@ describe('Testing that API:', () => {
         const loggedInUser = yield logInUserRes.json();
         console.log('loggedInUser: ', loggedInUser);
         expect(logInUserRes.status).toBe(200);
-        expect(loggedInUser._id).toBe('639c327af1f7029f2ebd29ee');
+        expect(loggedInUser._id).toBe(jUser._id);
     }));
 });
 //# sourceMappingURL=server.test.js.map
