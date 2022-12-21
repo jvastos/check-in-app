@@ -47,5 +47,28 @@ describe('Testing that API:', () => {
             });
         }
     }));
+    it('Logs in a user.', () => __awaiter(void 0, void 0, void 0, function* () {
+        const allUsers = yield fetch('https://checkin-app-backend.fly.dev/allusers');
+        const parsedAllUsers = yield allUsers.json();
+        const randomUser = parsedAllUsers[5];
+        console.log('randomUser: ', randomUser);
+        const body = {
+            username: 'j',
+            password: 'j',
+        };
+        const stringBody = JSON.stringify(body);
+        const logInUserRes = yield fetch('https://checkin-app-backend.fly.dev/logInUser', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: stringBody,
+        });
+        const loggedInUser = yield logInUserRes.json();
+        console.log('loggedInUser: ', loggedInUser);
+        expect(logInUserRes.status).toBe(200);
+        expect(loggedInUser._id).toBe('639c327af1f7029f2ebd29ee');
+    }));
 });
 //# sourceMappingURL=server.test.js.map

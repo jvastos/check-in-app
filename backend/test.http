@@ -3,12 +3,12 @@ GET https://checkin-app-backend.fly.dev/allusers HTTP/1.1
 
 
 ###Update user checkInStatus
-PATCH  http://localhost:5000/639c327af1f7029f2ebd29ee/true HTTP/1.1
+PATCH  https://checkin-app-backend.fly.dev/639c327af1f7029f2ebd29ee/true HTTP/1.1
 Content-Type: application/json
 
 
 ###Create a user
-POST  http://localhost:5000/users HTTP/1.1
+POST  https://checkin-app-backend.fly.dev/users HTTP/1.1
 Content-Type: application/json
 
 {
@@ -17,10 +17,10 @@ Content-Type: application/json
 }
 
 ###Login a user
-POST  http://localhost:5000/logInUser HTTP/1.1
+POST  https://checkin-app-backend.fly.dev/logInUser HTTP/1.1
 Content-Type: application/json
 
 {
-    "username": "crazy_goat35",
-    "password": "abc123"
+    "username": "j",
+    "password": "j"
 }

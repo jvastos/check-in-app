@@ -45,4 +45,31 @@ describe('Testing that API:', () => {
       );
     }
   });
+
+  it('Logs in a user.', async () => {
+    const allUsers = await fetch('https://checkin-app-backend.fly.dev/allusers');
+    const parsedAllUsers = await allUsers.json();
+    const randomUser = parsedAllUsers[5];
+    console.log('randomUser: ', randomUser);
+
+    const body = {
+      username: 'j',
+      password: 'j',
+    };
+
+    const stringBody = JSON.stringify(body);
+
+    const logInUserRes = await fetch('https://checkin-app-backend.fly.dev/logInUser', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: stringBody,
+    });
+    const loggedInUser = await logInUserRes.json();
+    console.log('loggedInUser: ', loggedInUser);
+    expect(logInUserRes.status).toBe(200);
+    expect(loggedInUser._id).toBe('639c327af1f7029f2ebd29ee');
+  });
 });
