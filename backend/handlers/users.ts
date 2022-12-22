@@ -1,10 +1,13 @@
 import { ObjectId } from 'mongodb';
 import bcrypt from 'bcrypt';
+import userControllers from '../controllers/users';
+
+const getAllUsers = userControllers.getAllUsers;
 
 const userHandlers = {
   getAllUsers: (db: any) => async (req: any, res: any) => {
-    const users = await db.collection('users').find({}).toArray();
-    res.status(200).send(users);
+    const allUsers = await getAllUsers(db);
+    res.status(200).send(allUsers);
   },
   logInUser: (db: any) => async (req: any, res: any) => {
     const reqUser = {

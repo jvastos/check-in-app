@@ -14,10 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongodb_1 = require("mongodb");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const users_1 = __importDefault(require("../controllers/users"));
+const getAllUsers = users_1.default.getAllUsers;
 const userHandlers = {
     getAllUsers: (db) => (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        const users = yield db.collection('users').find({}).toArray();
-        res.status(200).send(users);
+        const allUsers = yield getAllUsers(db);
+        res.status(200).send(allUsers);
     }),
     logInUser: (db) => (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const reqUser = {
