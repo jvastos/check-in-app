@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import userControllers from '../controllers/users';
 
 const getAllUsers = userControllers.getAllUsers;
+const findUser = userControllers.findUser;
 
 const userHandlers = {
   getAllUsers: (db: any) => async (req: any, res: any) => {
@@ -14,7 +15,7 @@ const userHandlers = {
       username: req.body.username,
       password: req.body.password,
     };
-    const user = await db.collection('users').findOne({ username: `${reqUser.username}` });
+    const user = await findUser(db, reqUser);
 
     const passwordMatch = await bcrypt.compare(req.body.password, user.password);
     if (passwordMatch) {

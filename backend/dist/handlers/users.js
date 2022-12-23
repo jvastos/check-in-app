@@ -16,6 +16,7 @@ const mongodb_1 = require("mongodb");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const users_1 = __importDefault(require("../controllers/users"));
 const getAllUsers = users_1.default.getAllUsers;
+const findUser = users_1.default.findUser;
 const userHandlers = {
     getAllUsers: (db) => (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const allUsers = yield getAllUsers(db);
@@ -26,7 +27,7 @@ const userHandlers = {
             username: req.body.username,
             password: req.body.password,
         };
-        const user = yield db.collection('users').findOne({ username: `${reqUser.username}` });
+        const user = yield findUser(db, reqUser);
         const passwordMatch = yield bcrypt_1.default.compare(req.body.password, user.password);
         if (passwordMatch) {
             res.status(200).send(user);

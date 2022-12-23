@@ -14,6 +14,10 @@ const userControllers = {
         const allUsers = yield db.collection('users').find({}).toArray();
         return allUsers;
     }),
+    findUser: (db, reqUser) => __awaiter(void 0, void 0, void 0, function* () {
+        const foundUser = yield db.collection('users').findOne({ username: `${reqUser.username}` });
+        return foundUser;
+    }),
 };
 exports.default = userControllers;
 //# sourceMappingURL=users.js.map
