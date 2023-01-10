@@ -6,8 +6,11 @@ import { userStateStore } from './zustandStore';
 
 const pageStyles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  wrapper: {
+    maxWidth: '200',
     padding: 10,
   },
   input: {
@@ -144,56 +147,59 @@ const LoginScreen = ({ navigation }: Props) => {
 
   return (
     <View style={pageStyles.container}>
-      <Text>Username</Text>
-      <TextInput
-        style={pageStyles.input}
-        clearButtonMode='always'
-        placeholder='ex. dope_gecko23'
-        placeholderTextColor={'grey'}
-        onChange={(event) => {
-          setUserName(event.nativeEvent.text);
-        }}
-        value={username}
-        autoComplete='username'
-        autoCorrect={false}
-        selectTextOnFocus={true}
-        autoCapitalize='none'
-      />
-      <Text style={pageStyles.minorText}>{usernameStatusMessage}</Text>
-      <Text>Password</Text>
-      <TextInput
-        style={pageStyles.input}
-        clearButtonMode='always'
-        placeholder='ex. n!rv@na91'
-        placeholderTextColor={'grey'}
-        autoCorrect={false}
-        secureTextEntry={true}
-        maxLength={12}
-        selectTextOnFocus={true}
-        value={password}
-        onChange={(event) => {
-          setPassword(event.nativeEvent.text);
-        }}
-        onFocus={() => {
-          setPasswordStatusMessage('');
-        }}
-      />
-      <Text style={pageStyles.minorText}>{passwordStatusMessage}</Text>
-      <Button
-        title={usernameIsTaken ? 'Login' : 'Signup'}
-        onPress={
-          usernameIsTaken
-            ? () => {
-                login(username, password);
-              }
-            : () => {
-                signup(username, password);
-              }
-        }
-      />
-      <Text style={pageStyles.minorText}>
-        If you haven't created a user before, go ahead and create one by tiping in the fields above.
-      </Text>
+      <View style={pageStyles.wrapper}>
+        <Text>Username</Text>
+        <TextInput
+          style={pageStyles.input}
+          clearButtonMode='always'
+          placeholder='ex. dope_gecko23'
+          placeholderTextColor={'grey'}
+          onChange={(event) => {
+            setUserName(event.nativeEvent.text);
+          }}
+          value={username}
+          autoComplete='username'
+          autoCorrect={false}
+          selectTextOnFocus={true}
+          autoCapitalize='none'
+        />
+        <Text style={pageStyles.minorText}>{usernameStatusMessage}</Text>
+        <Text>Password</Text>
+        <TextInput
+          style={pageStyles.input}
+          clearButtonMode='always'
+          placeholder='ex. n!rv@na91'
+          placeholderTextColor={'grey'}
+          autoCorrect={false}
+          secureTextEntry={true}
+          maxLength={12}
+          selectTextOnFocus={true}
+          value={password}
+          onChange={(event) => {
+            setPassword(event.nativeEvent.text);
+          }}
+          onFocus={() => {
+            setPasswordStatusMessage('');
+          }}
+        />
+        <Text style={pageStyles.minorText}>{passwordStatusMessage}</Text>
+        <Button
+          title={usernameIsTaken ? 'Login' : 'Signup'}
+          onPress={
+            usernameIsTaken
+              ? () => {
+                  login(username, password);
+                }
+              : () => {
+                  signup(username, password);
+                }
+          }
+        />
+        <Text style={pageStyles.minorText}>
+          If you haven't created a user before, go ahead and create one by tiping in the fields
+          above.
+        </Text>
+      </View>
     </View>
   );
 };
