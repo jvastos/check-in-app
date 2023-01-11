@@ -12,11 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongodb_1 = require("mongodb");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const users_1 = __importDefault(require("../controllers/users"));
 const getAllUsers = users_1.default.getAllUsers;
 const findUser = users_1.default.findUser;
+const updateUser = users_1.default.updateUser;
 const userHandlers = {
     getAllUsers: (db) => (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const allUsers = yield getAllUsers(db);
@@ -39,12 +39,11 @@ const userHandlers = {
     updateUser: (db) => (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const userId = req.params.userId;
         const checkInStatus = req.params.checkInStatus === 'true';
-        const foundUser = yield db
-            .collection('users')
-            .findOneAndUpdate({ _id: new mongodb_1.ObjectId(`${userId}`) }, { $set: { isCheckedIn: checkInStatus } }, { returnDocument: 'after' }, (err, documents) => {
-            res.send({ error: err, affected: documents });
-            res.status(200);
-        });
+        const userCheckInInfo = {
+            userId,
+            checkInStatus,
+        };
+        const foundUser = yield updateUser(db, userCheckInInfo, res);
     }),
     createUser: (db) => (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const hashedPassword = yield bcrypt_1.default.hash(req.body.password, 10);

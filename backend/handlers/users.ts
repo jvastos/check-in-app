@@ -4,6 +4,7 @@ import userControllers from '../controllers/users';
 
 const getAllUsers = userControllers.getAllUsers;
 const findUser = userControllers.findUser;
+const updateUser = userControllers.updateUser;
 
 const userHandlers = {
   getAllUsers: (db: any) => async (req: any, res: any) => {
@@ -28,17 +29,12 @@ const userHandlers = {
     const userId = req.params.userId;
     const checkInStatus = req.params.checkInStatus === 'true';
 
-    const foundUser = await db
-      .collection('users')
-      .findOneAndUpdate(
-        { _id: new ObjectId(`${userId}`) },
-        { $set: { isCheckedIn: checkInStatus } },
-        { returnDocument: 'after' },
-        (err: any, documents: any) => {
-          res.send({ error: err, affected: documents });
-          res.status(200);
-        }
-      );
+    const userCheckInInfo = {
+      userId,
+      checkInStatus,
+    };
+
+    const foundUser = await updateUser(db, userCheckInInfo, res);
   },
   createUser: (db: any) => async (req: any, res: any) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);

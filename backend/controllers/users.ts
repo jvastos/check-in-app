@@ -1,9 +1,13 @@
 import { ObjectId } from 'mongodb';
-import bcrypt from 'bcrypt';
 
 interface IUserInfoBasic {
   username: string;
   password: string;
+}
+
+interface IUserCheckInInfo {
+  userId: string;
+  checkInStatus: boolean;
 }
 
 const userControllers = {
@@ -14,6 +18,19 @@ const userControllers = {
   findUser: async (db: any, reqUser: IUserInfoBasic) => {
     const foundUser = await db.collection('users').findOne({ username: `${reqUser.username}` });
     return foundUser;
+  },
+  updateUser: async (db: any, userCheckInInfo: IUserCheckInInfo, res: any) => {
+    await db
+      .collection('users')
+      .findOneAndUpdate(
+        { _id: new ObjectId(`${userCheckInInfo.userId}`) },
+        { $set: { isCheckedIn: userCheckInInfo.checkInStatus } },
+        { returnDocument: 'after' },
+        (err: any, documents: any) => {
+          res.status(200);
+          res.send({ error: err, affected: documents });
+        }
+      );
   },
 };
 
