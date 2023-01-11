@@ -9,4 +9,4 @@ node_modules/
 fly.toml
 
 #Http tester
-.http
+test.http
