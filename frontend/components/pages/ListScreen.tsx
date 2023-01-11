@@ -6,7 +6,15 @@ import { API_URL } from '@env';
 
 const screenStyles = StyleSheet.create({
   container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  wrapper: {
     padding: 20,
+    textAlign: 'center',
+  },
+  headline: {
+    fontWeight: '900',
   },
   name: {
     paddingVertical: 10,
@@ -48,18 +56,21 @@ const ListScreen = ({ navigation }: Props) => {
 
   return (
     <View style={screenStyles.container}>
-      {checkedInUsers[0] !== undefined ? (
-        checkedInUsers.map((i) => (
-          <Text
-            style={screenStyles.name}
-            key={Math.random()}
-          >
-            {i}
-          </Text>
-        ))
-      ) : (
-        <Text style={screenStyles.name}>Sad. It seems like no one is on the wall right now.</Text>
-      )}
+      <View style={screenStyles.wrapper}>
+        <Text style={screenStyles.headline}>Who is in the wall right now:</Text>
+        {checkedInUsers[0] !== undefined ? (
+          checkedInUsers.map((i) => (
+            <Text
+              style={screenStyles.name}
+              key={Math.random()}
+            >
+              {i}
+            </Text>
+          ))
+        ) : (
+          <Text style={screenStyles.name}>Sad. It seems like no one is on the wall right now.</Text>
+        )}
+      </View>
     </View>
   );
 };
