@@ -196,7 +196,7 @@ const LoginScreen = ({ navigation }: Props) => {
           }
         />
         <Text style={pageStyles.minorText}>
-          If you haven't created a user before, go ahead and create one by tiping in the fields
+          If you haven't created a user before, go ahead and create one by typing in the fields
           above.
         </Text>
       </View>
