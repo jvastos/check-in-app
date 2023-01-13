@@ -3,11 +3,21 @@ import { View, TextInput, StyleSheet, Text, Button, Alert } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { API_URL } from '@env';
 import { userStateStore } from './zustandStore';
+import { useFonts, Dokdo_400Regular } from '@expo-google-fonts/Dokdo';
 
-const pageStyles = StyleSheet.create({
+let [fontsLoaded] = useFonts({
+  Dokdo_400Regular,
+});
+
+const screenStyles = StyleSheet.create({
+  background: {
+    flex: 1,
+    backgroundColor: '#AFEEEE',
+  },
   container: {
     alignItems: 'center',
     justifyContent: 'center',
+    fontFamily: 'Dokdo_400Regular',
   },
   wrapper: {
     maxWidth: '200',
@@ -23,6 +33,9 @@ const pageStyles = StyleSheet.create({
     fontSize: 12,
     color: 'grey',
     marginVertical: 10,
+  },
+  button: {
+    backgroundColor: 'pink',
   },
 });
 
@@ -146,59 +159,62 @@ const LoginScreen = ({ navigation }: Props) => {
   };
 
   return (
-    <View style={pageStyles.container}>
-      <View style={pageStyles.wrapper}>
-        <Text>Username</Text>
-        <TextInput
-          style={pageStyles.input}
-          clearButtonMode='always'
-          placeholder='ex. dope_gecko23'
-          placeholderTextColor={'grey'}
-          onChange={(event) => {
-            setUserName(event.nativeEvent.text);
-          }}
-          value={username}
-          autoComplete='username'
-          autoCorrect={false}
-          selectTextOnFocus={true}
-          autoCapitalize='none'
-        />
-        <Text style={pageStyles.minorText}>{usernameStatusMessage}</Text>
-        <Text>Password</Text>
-        <TextInput
-          style={pageStyles.input}
-          clearButtonMode='always'
-          placeholder='ex. n!rv@na91'
-          placeholderTextColor={'grey'}
-          autoCorrect={false}
-          secureTextEntry={true}
-          maxLength={12}
-          selectTextOnFocus={true}
-          value={password}
-          onChange={(event) => {
-            setPassword(event.nativeEvent.text);
-          }}
-          onFocus={() => {
-            setPasswordStatusMessage('');
-          }}
-        />
-        <Text style={pageStyles.minorText}>{passwordStatusMessage}</Text>
-        <Button
-          title={usernameIsTaken ? 'Login' : 'Signup'}
-          onPress={
-            usernameIsTaken
-              ? () => {
-                  login(username, password);
-                }
-              : () => {
-                  signup(username, password);
-                }
-          }
-        />
-        <Text style={pageStyles.minorText}>
-          If you haven't created a user before, go ahead and create one by typing in the fields
-          above.
-        </Text>
+    <View style={screenStyles.background}>
+      <View style={screenStyles.container}>
+        <View style={screenStyles.wrapper}>
+          <Text>Username</Text>
+          <TextInput
+            style={screenStyles.input}
+            clearButtonMode='always'
+            placeholder='ex. dope_gecko23'
+            placeholderTextColor={'grey'}
+            onChange={(event) => {
+              setUserName(event.nativeEvent.text);
+            }}
+            value={username}
+            autoComplete='username'
+            autoCorrect={false}
+            selectTextOnFocus={true}
+            autoCapitalize='none'
+          />
+          <Text style={screenStyles.minorText}>{usernameStatusMessage}</Text>
+          <Text>Password</Text>
+          <TextInput
+            style={screenStyles.input}
+            clearButtonMode='always'
+            placeholder='ex. n!rv@na91'
+            placeholderTextColor={'grey'}
+            autoCorrect={false}
+            secureTextEntry={true}
+            maxLength={12}
+            selectTextOnFocus={true}
+            value={password}
+            onChange={(event) => {
+              setPassword(event.nativeEvent.text);
+            }}
+            onFocus={() => {
+              setPasswordStatusMessage('');
+            }}
+          />
+          <Text style={screenStyles.minorText}>{passwordStatusMessage}</Text>
+          <Button
+            color='#FFC0CB'
+            title={usernameIsTaken ? 'Login' : 'Signup'}
+            onPress={
+              usernameIsTaken
+                ? () => {
+                    login(username, password);
+                  }
+                : () => {
+                    signup(username, password);
+                  }
+            }
+          />
+          <Text style={screenStyles.minorText}>
+            If you haven't created a user before, go ahead and create one by typing in the fields
+            above.
+          </Text>
+        </View>
       </View>
     </View>
   );
