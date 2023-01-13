@@ -3,7 +3,7 @@ import { StyleSheet, View, Button, Text } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { userStateStore } from './zustandStore';
 import { API_URL } from '@env';
-import { useFonts, Dokdo_400Regular } from '@expo-google-fonts/Dokdo';
+import { useFonts, Dokdo_400Regular } from '@expo-google-fonts/dokdo';
 import { ViaodaLibre_400Regular } from '@expo-google-fonts/viaoda-libre';
 
 const screenStyles = StyleSheet.create({
