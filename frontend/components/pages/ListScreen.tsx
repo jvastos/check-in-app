@@ -3,9 +3,13 @@ import { View, Text, StyleSheet } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { userStateStore } from './zustandStore';
 import { API_URL } from '@env';
+import { useFonts, Dokdo_400Regular } from '@expo-google-fonts/Dokdo';
+import { ViaodaLibre_400Regular } from '@expo-google-fonts/viaoda-libre';
 
 const screenStyles = StyleSheet.create({
   container: {
+    flex: 1,
+    backgroundColor: '#AFEEEE',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -14,9 +18,16 @@ const screenStyles = StyleSheet.create({
     textAlign: 'center',
   },
   headline: {
+    fontSize: 30,
     fontWeight: '900',
+    fontFamily: 'Dokdo_400Regular',
+    color: 'white',
   },
   name: {
+    fontSize: 30,
+    fontWeight: '900',
+    fontFamily: 'ViaodaLibre_400Regular',
+    color: '#9ACD32',
     paddingVertical: 10,
   },
 });
@@ -43,6 +54,11 @@ async function request<T>(url: string): Promise<T> {
 const ListScreen = ({ navigation }: Props) => {
   const checkedInUsers = userStateStore((state) => state.checkedInUsers);
   const setCheckedInUsers = userStateStore((state) => state.setCheckedInUsers);
+
+  let [fontsLoaded] = useFonts({
+    Dokdo_400Regular,
+    ViaodaLibre_400Regular,
+  });
 
   useEffect(() => {
     const fetchAllUsers = async () => {

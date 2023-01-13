@@ -3,17 +3,27 @@ import { StyleSheet, View, Button, Text } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { userStateStore } from './zustandStore';
 import { API_URL } from '@env';
+import { useFonts, Dokdo_400Regular } from '@expo-google-fonts/Dokdo';
+import { ViaodaLibre_400Regular } from '@expo-google-fonts/viaoda-libre';
 
 const screenStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#AFEEEE',
     alignItems: 'center',
     justifyContent: 'center',
   },
   greeting: {
     fontWeight: '900',
-    fontSize: 20,
+    fontSize: 30,
+    fontFamily: 'Dokdo_400Regular',
+    color: 'white',
+  },
+  statusTxt: {
+    fontWeight: '900',
+    fontSize: 16,
+    fontFamily: 'ViaodaLibre_400Regular',
+    color: '#9ACD32',
   },
   button: {
     marginVertical: 10,
@@ -35,6 +45,11 @@ const HomeScreen = ({ navigation }: Props) => {
   const setIsCheckedIn = userStateStore((state) => state.setIsCheckedIn);
   const userIsLoggedIn: boolean = userStateStore((state) => state.userIsLoggedIn);
   const setUserIsLoggedIn = userStateStore((state) => state.setUserIsLoggedIn);
+
+  let [fontsLoaded] = useFonts({
+    Dokdo_400Regular,
+    ViaodaLibre_400Regular,
+  });
 
   const updateUserCheckInStatus = async (checkInStatus: boolean) => {
     try {
@@ -61,15 +76,19 @@ const HomeScreen = ({ navigation }: Props) => {
   return (
     <View style={screenStyles.container}>
       <Text style={screenStyles.greeting}>Hey {username} </Text>
-      <Text>Your status: {checkInStatus === true ? 'Checked in' : 'Checked out'}</Text>
+      <Text style={screenStyles.statusTxt}>
+        Your status: {checkInStatus === true ? 'Checked in' : 'Checked out'}
+      </Text>
       <View style={screenStyles.button}>
         <Button
+          color='#FFC0CB'
           title={checkInStatus === true ? 'Check out' : 'Check in'}
           onPress={setIsCheckedIn}
         />
       </View>
       <View style={screenStyles.button}>
         <Button
+          color='#FFC0CB'
           title='Check The Wall'
           onPress={() => {
             navigation.navigate('List');
@@ -78,6 +97,7 @@ const HomeScreen = ({ navigation }: Props) => {
       </View>
       <View style={screenStyles.button}>
         <Button
+          color='#FFC0CB'
           title='Logout'
           onPress={() => {
             setUserIsLoggedIn(false);

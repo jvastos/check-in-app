@@ -3,17 +3,20 @@
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "npx expo start",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider npx expo start",
     "android": "npx expo start --android",
     "ios": "npx expo start --ios",
     "web": "npx expo start --web",
     "build": "npx expo export:web"
   },
   "dependencies": {
+    "@expo-google-fonts/dokdo": "^0.2.2",
+    "@expo-google-fonts/viaoda-libre": "^0.2.2",
     "@expo/webpack-config": "^0.17.2",
     "@react-navigation/native": "^6.0.16",
     "@react-navigation/native-stack": "^6.9.4",
     "expo": "^47.0.0",
+    "expo-font": "~11.0.1",
     "expo-status-bar": "~1.4.2",
     "react": "18.1.0",
     "react-dom": "18.1.0",

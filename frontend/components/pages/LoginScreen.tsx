@@ -4,10 +4,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { API_URL } from '@env';
 import { userStateStore } from './zustandStore';
 import { useFonts, Dokdo_400Regular } from '@expo-google-fonts/Dokdo';
-
-let [fontsLoaded] = useFonts({
-  Dokdo_400Regular,
-});
+import { ViaodaLibre_400Regular } from '@expo-google-fonts/viaoda-libre';
 
 const screenStyles = StyleSheet.create({
   background: {
@@ -17,25 +14,31 @@ const screenStyles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    fontFamily: 'Dokdo_400Regular',
   },
   wrapper: {
     maxWidth: '200',
     padding: 10,
   },
+  inputLabel: {
+    fontFamily: 'Dokdo_400Regular',
+    fontSize: 30,
+    color: 'white',
+    fontWeight: '700',
+  },
   input: {
     height: 40,
     marginVertical: 10,
-    borderWidth: 1,
+    borderWidth: 4,
     padding: 10,
+    borderColor: 'white',
+    color: 'white',
   },
   minorText: {
-    fontSize: 12,
-    color: 'grey',
+    fontSize: 16,
+    fontWeight: '900',
+    color: '#9ACD32',
     marginVertical: 10,
-  },
-  button: {
-    backgroundColor: 'pink',
+    fontFamily: 'ViaodaLibre_400Regular',
   },
 });
 
@@ -87,6 +90,11 @@ const LoginScreen = ({ navigation }: Props) => {
   const setUsernameStatusMessage = userStateStore((state) => state.setUsernameStatusMessage);
   const passwordStatusMessage: string = userStateStore((state) => state.passwordStatusMessage);
   const setPasswordStatusMessage = userStateStore((state) => state.setPasswordStatusMessage);
+
+  let [fontsLoaded] = useFonts({
+    Dokdo_400Regular,
+    ViaodaLibre_400Regular,
+  });
 
   useEffect(() => {
     const checkUsernameAvailability = async (username: string) => {
@@ -162,7 +170,7 @@ const LoginScreen = ({ navigation }: Props) => {
     <View style={screenStyles.background}>
       <View style={screenStyles.container}>
         <View style={screenStyles.wrapper}>
-          <Text>Username</Text>
+          <Text style={screenStyles.inputLabel}>Username</Text>
           <TextInput
             style={screenStyles.input}
             clearButtonMode='always'
@@ -176,9 +184,10 @@ const LoginScreen = ({ navigation }: Props) => {
             autoCorrect={false}
             selectTextOnFocus={true}
             autoCapitalize='none'
+            placeholderTextColor='white'
           />
           <Text style={screenStyles.minorText}>{usernameStatusMessage}</Text>
-          <Text>Password</Text>
+          <Text style={screenStyles.inputLabel}>Password</Text>
           <TextInput
             style={screenStyles.input}
             clearButtonMode='always'
@@ -195,6 +204,7 @@ const LoginScreen = ({ navigation }: Props) => {
             onFocus={() => {
               setPasswordStatusMessage('');
             }}
+            placeholderTextColor='white'
           />
           <Text style={screenStyles.minorText}>{passwordStatusMessage}</Text>
           <Button
