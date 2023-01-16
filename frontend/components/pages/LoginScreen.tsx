@@ -199,7 +199,6 @@ const LoginScreen = ({ navigation }: Props) => {
             style={screenStyles.input}
             clearButtonMode='always'
             placeholder='ex. dope_gecko23'
-            placeholderTextColor={'grey'}
             onChange={(event) => {
               setUserName(event.nativeEvent.text);
             }}
@@ -216,7 +215,6 @@ const LoginScreen = ({ navigation }: Props) => {
             style={screenStyles.input}
             clearButtonMode='always'
             placeholder='ex. n!rv@na91'
-            placeholderTextColor={'grey'}
             autoCorrect={false}
             secureTextEntry={true}
             maxLength={12}
