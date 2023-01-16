@@ -5,11 +5,12 @@ import { userStateStore } from './zustandStore';
 import { API_URL } from '@env';
 import { useFonts, Dokdo_400Regular } from '@expo-google-fonts/dokdo';
 import { ViaodaLibre_400Regular } from '@expo-google-fonts/viaoda-libre';
+import colors from '../colors';
 
 const screenStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#AFEEEE',
+    backgroundColor: colors.babyBlue,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -21,13 +22,13 @@ const screenStyles = StyleSheet.create({
     fontSize: 30,
     fontWeight: '900',
     fontFamily: 'Dokdo_400Regular',
-    color: 'white',
+    color: colors.white,
   },
   name: {
     fontSize: 30,
     fontWeight: '900',
     fontFamily: 'ViaodaLibre_400Regular',
-    color: '#9ACD32',
+    color: colors.acidGreen,
     paddingVertical: 10,
   },
 });

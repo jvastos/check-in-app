@@ -5,11 +5,12 @@ import { userStateStore } from './zustandStore';
 import { API_URL } from '@env';
 import { useFonts, Dokdo_400Regular } from '@expo-google-fonts/dokdo';
 import { ViaodaLibre_400Regular } from '@expo-google-fonts/viaoda-libre';
+import colors from '../colors';
 
 const screenStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#AFEEEE',
+    backgroundColor: colors.babyBlue,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -17,13 +18,13 @@ const screenStyles = StyleSheet.create({
     fontWeight: '900',
     fontSize: 30,
     fontFamily: 'Dokdo_400Regular',
-    color: 'white',
+    color: colors.white,
   },
   statusTxt: {
     fontWeight: '900',
     fontSize: 16,
     fontFamily: 'ViaodaLibre_400Regular',
-    color: '#9ACD32',
+    color: colors.acidGreen,
   },
   button: {
     marginVertical: 10,
@@ -81,14 +82,14 @@ const HomeScreen = ({ navigation }: Props) => {
       </Text>
       <View style={screenStyles.button}>
         <Button
-          color='#FFC0CB'
+          color={colors.pink}
           title={checkInStatus === true ? 'Check out' : 'Check in'}
           onPress={setIsCheckedIn}
         />
       </View>
       <View style={screenStyles.button}>
         <Button
-          color='#FFC0CB'
+          color={colors.pink}
           title='Check The Wall'
           onPress={() => {
             navigation.navigate('List');
@@ -97,7 +98,7 @@ const HomeScreen = ({ navigation }: Props) => {
       </View>
       <View style={screenStyles.button}>
         <Button
-          color='#FFC0CB'
+          color={colors.pink}
           title='Logout'
           onPress={() => {
             setUserIsLoggedIn(false);

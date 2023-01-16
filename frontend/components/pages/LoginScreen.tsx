@@ -5,11 +5,12 @@ import { API_URL } from '@env';
 import { userStateStore } from './zustandStore';
 import { useFonts, Dokdo_400Regular } from '@expo-google-fonts/dokdo';
 import { ViaodaLibre_400Regular } from '@expo-google-fonts/viaoda-libre';
+import colors from '../colors';
 
 const screenStyles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: '#AFEEEE',
+    backgroundColor: colors.babyBlue,
   },
   container: {
     alignItems: 'center',
@@ -19,10 +20,17 @@ const screenStyles = StyleSheet.create({
     maxWidth: '200',
     padding: 10,
   },
+  logo: {
+    fontFamily: 'Dokdo_400Regular',
+    fontSize: 60,
+    color: colors.pink,
+    fontWeight: '700',
+    textAlign: 'center',
+  },
   inputLabel: {
     fontFamily: 'Dokdo_400Regular',
     fontSize: 30,
-    color: 'white',
+    color: colors.white,
     fontWeight: '700',
   },
   input: {
@@ -30,13 +38,13 @@ const screenStyles = StyleSheet.create({
     marginVertical: 10,
     borderWidth: 4,
     padding: 10,
-    borderColor: 'white',
-    color: 'white',
+    borderColor: colors.white,
+    color: colors.white,
   },
   minorText: {
     fontSize: 16,
     fontWeight: '900',
-    color: '#9ACD32',
+    color: colors.acidGreen,
     marginVertical: 10,
     fontFamily: 'ViaodaLibre_400Regular',
   },
@@ -170,6 +178,7 @@ const LoginScreen = ({ navigation }: Props) => {
     <View style={screenStyles.background}>
       <View style={screenStyles.container}>
         <View style={screenStyles.wrapper}>
+          <Text style={screenStyles.logo}>GOAT Wall</Text>
           <Text style={screenStyles.inputLabel}>Username</Text>
           <TextInput
             style={screenStyles.input}
@@ -184,7 +193,7 @@ const LoginScreen = ({ navigation }: Props) => {
             autoCorrect={false}
             selectTextOnFocus={true}
             autoCapitalize='none'
-            placeholderTextColor='white'
+            placeholderTextColor={colors.white}
           />
           <Text style={screenStyles.minorText}>{usernameStatusMessage}</Text>
           <Text style={screenStyles.inputLabel}>Password</Text>
@@ -204,11 +213,11 @@ const LoginScreen = ({ navigation }: Props) => {
             onFocus={() => {
               setPasswordStatusMessage('');
             }}
-            placeholderTextColor='white'
+            placeholderTextColor={colors.white}
           />
           <Text style={screenStyles.minorText}>{passwordStatusMessage}</Text>
           <Button
-            color='#FFC0CB'
+            color={colors.pink}
             title={usernameIsTaken ? 'Login' : 'Signup'}
             onPress={
               usernameIsTaken
