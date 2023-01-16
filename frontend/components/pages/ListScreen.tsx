@@ -19,7 +19,7 @@ const screenStyles = StyleSheet.create({
     textAlign: 'center',
   },
   headline: {
-    fontSize: 30,
+    fontSize: 40,
     fontWeight: '900',
     fontFamily: 'Dokdo_400Regular',
     color: colors.white,

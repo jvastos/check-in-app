@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, TextInput, StyleSheet, Text, Button, Alert } from 'react-native';
+import { View, TextInput, StyleSheet, Text, Alert, TouchableOpacity } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { API_URL } from '@env';
 import { userStateStore } from './zustandStore';
@@ -29,24 +29,39 @@ const screenStyles = StyleSheet.create({
   },
   inputLabel: {
     fontFamily: 'Dokdo_400Regular',
-    fontSize: 30,
+    fontSize: 34,
     color: colors.white,
     fontWeight: '700',
   },
   input: {
-    height: 40,
+    height: 50,
     marginVertical: 10,
     borderWidth: 4,
     padding: 10,
     borderColor: colors.white,
     color: colors.white,
+    fontSize: 22,
   },
   minorText: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '900',
     color: colors.acidGreen,
     marginVertical: 10,
     fontFamily: 'ViaodaLibre_400Regular',
+  },
+  button: {
+    backgroundColor: colors.pink,
+    textAlign: 'center',
+    padding: 10,
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
+  },
+  buttonText: {
+    color: colors.white,
+    fontFamily: 'Dokdo_400Regular',
+    fontSize: 34,
   },
 });
 
@@ -216,9 +231,8 @@ const LoginScreen = ({ navigation }: Props) => {
             placeholderTextColor={colors.white}
           />
           <Text style={screenStyles.minorText}>{passwordStatusMessage}</Text>
-          <Button
-            color={colors.pink}
-            title={usernameIsTaken ? 'Login' : 'Signup'}
+          <TouchableOpacity
+            style={screenStyles.button}
             onPress={
               usernameIsTaken
                 ? () => {
@@ -228,7 +242,9 @@ const LoginScreen = ({ navigation }: Props) => {
                     signup(username, password);
                   }
             }
-          />
+          >
+            <Text style={screenStyles.buttonText}>{usernameIsTaken ? 'Login' : 'Signup'}</Text>
+          </TouchableOpacity>
           <Text style={screenStyles.minorText}>
             If you haven't created a user before, go ahead and create one by typing in the fields
             above.

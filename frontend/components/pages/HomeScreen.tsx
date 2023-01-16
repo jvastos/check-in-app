@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View, Button, Text } from 'react-native';
+import { StyleSheet, View, Button, Text, TouchableOpacity } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { userStateStore } from './zustandStore';
 import { API_URL } from '@env';
@@ -16,18 +16,30 @@ const screenStyles = StyleSheet.create({
   },
   greeting: {
     fontWeight: '900',
-    fontSize: 30,
+    fontSize: 50,
     fontFamily: 'Dokdo_400Regular',
     color: colors.white,
   },
   statusTxt: {
     fontWeight: '900',
-    fontSize: 16,
+    fontSize: 24,
     fontFamily: 'ViaodaLibre_400Regular',
     color: colors.acidGreen,
   },
   button: {
     marginVertical: 10,
+    backgroundColor: colors.pink,
+    paddingHorizontal: 10,
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
+  },
+  buttonText: {
+    fontFamily: 'Dokdo_400Regular',
+    fontSize: 24,
+    fontWeight: '900',
+    color: colors.white,
   },
 });
 
@@ -81,29 +93,34 @@ const HomeScreen = ({ navigation }: Props) => {
         Your status: {checkInStatus === true ? 'Checked in' : 'Checked out'}
       </Text>
       <View style={screenStyles.button}>
-        <Button
-          color={colors.pink}
-          title={checkInStatus === true ? 'Check out' : 'Check in'}
+        <TouchableOpacity
+          style={screenStyles.button}
           onPress={setIsCheckedIn}
-        />
+        >
+          <Text style={screenStyles.buttonText}>
+            {checkInStatus === true ? 'Check out' : 'Check in'}
+          </Text>
+        </TouchableOpacity>
       </View>
       <View style={screenStyles.button}>
-        <Button
-          color={colors.pink}
-          title='Check The Wall'
+        <TouchableOpacity
+          style={screenStyles.button}
           onPress={() => {
             navigation.navigate('List');
           }}
-        />
+        >
+          <Text style={screenStyles.buttonText}>Check The Wall</Text>
+        </TouchableOpacity>
       </View>
       <View style={screenStyles.button}>
-        <Button
-          color={colors.pink}
-          title='Logout'
+        <TouchableOpacity
+          style={screenStyles.button}
           onPress={() => {
             setUserIsLoggedIn(false);
           }}
-        />
+        >
+          <Text style={screenStyles.buttonText}>Logout</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
