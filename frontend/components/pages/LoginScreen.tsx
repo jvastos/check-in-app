@@ -15,7 +15,7 @@ const screenStyles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 10,
+    paddingHorizontal: 10,
   },
   wrapper: {
     maxWidth: '200',
