@@ -15,6 +15,7 @@ const screenStyles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 10,
   },
   wrapper: {
     maxWidth: '200',
@@ -41,6 +42,10 @@ const screenStyles = StyleSheet.create({
     borderColor: colors.white,
     color: colors.white,
     fontSize: 22,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 35,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 20,
   },
   minorText: {
     fontSize: 18,
@@ -197,6 +202,7 @@ const LoginScreen = ({ navigation }: Props) => {
           <Text style={screenStyles.inputLabel}>Username</Text>
           <TextInput
             style={screenStyles.input}
+            multiline={false}
             clearButtonMode='always'
             placeholder='ex. dope_gecko23'
             onChange={(event) => {
@@ -213,6 +219,7 @@ const LoginScreen = ({ navigation }: Props) => {
           <Text style={screenStyles.inputLabel}>Password</Text>
           <TextInput
             style={screenStyles.input}
+            multiline={false}
             clearButtonMode='always'
             placeholder='ex. n!rv@na91'
             autoCorrect={false}

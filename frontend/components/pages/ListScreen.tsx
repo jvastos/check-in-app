@@ -13,6 +13,7 @@ const screenStyles = StyleSheet.create({
     backgroundColor: colors.babyBlue,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 10,
   },
   wrapper: {
     padding: 20,

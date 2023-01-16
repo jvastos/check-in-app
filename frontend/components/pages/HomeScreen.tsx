@@ -13,6 +13,7 @@ const screenStyles = StyleSheet.create({
     backgroundColor: colors.babyBlue,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 10,
   },
   greeting: {
     fontWeight: '900',
