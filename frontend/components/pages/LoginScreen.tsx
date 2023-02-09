@@ -1,5 +1,13 @@
 import React, { useEffect } from 'react';
-import { View, TextInput, StyleSheet, Text, Alert, TouchableOpacity } from 'react-native';
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  Text,
+  Alert,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { API_URL } from '@env';
 import { userStateStore } from './zustandStore';
@@ -13,11 +21,10 @@ const screenStyles = StyleSheet.create({
   },
   container: {
     alignItems: 'center',
-    justifyContent: 'center',
     paddingHorizontal: 12,
   },
   wrapper: {
-    maxWidth: '200',
+    maxWidth: 700,
     padding: 10,
   },
   logo: {
@@ -79,7 +86,7 @@ const screenStyles = StyleSheet.create({
     color: 'black',
     fontSize: 16,
     textAlign: 'center',
-    paddingTop: 50,
+    marginTop: 50,
     fontFamily: 'Dokdo_400Regular',
   },
 });
@@ -209,7 +216,7 @@ const LoginScreen = ({ navigation }: Props) => {
   };
 
   return (
-    <View style={screenStyles.background}>
+    <ScrollView style={screenStyles.background}>
       <View style={screenStyles.container}>
         <View style={screenStyles.wrapper}>
           <Text style={screenStyles.logo}>GOAT Wall</Text>
@@ -279,7 +286,7 @@ const LoginScreen = ({ navigation }: Props) => {
           </Text>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
