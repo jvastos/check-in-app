@@ -9,13 +9,12 @@ import colors from '../colors';
 
 const screenStyles = StyleSheet.create({
   background: {
-    flex: 1,
     backgroundColor: colors.babyBlue,
   },
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: 12,
   },
   wrapper: {
     maxWidth: '200',
@@ -67,6 +66,21 @@ const screenStyles = StyleSheet.create({
     color: colors.white,
     fontFamily: 'Dokdo_400Regular',
     fontSize: 34,
+  },
+
+  termsText: {
+    color: colors.floralWhite,
+    fontFamily: 'Dokdo_400Regular',
+    fontSize: 34,
+    textAlign: 'justify',
+  },
+
+  copyText: {
+    color: 'black',
+    fontSize: 16,
+    textAlign: 'center',
+    paddingTop: 50,
+    fontFamily: 'Dokdo_400Regular',
   },
 });
 
@@ -253,6 +267,15 @@ const LoginScreen = ({ navigation }: Props) => {
           <Text style={screenStyles.minorText}>
             If you haven't created a user before, go ahead and create one by typing in the fields
             above.
+          </Text>
+          <Text style={screenStyles.termsText}>
+            No small letters. No shady agreements. No sensitive information being stored. Just
+            create a username. BE CREATIVE. Don't be racist, sexist, homophobic, intolerant,
+            offensive in any form. Enjoy the company of your peers.
+          </Text>
+          <Text style={screenStyles.copyText}>
+            This is an experimental project by a newbie developer. For now it's not possible to
+            colaborate in it. All rights reserved to João Almeida.
           </Text>
         </View>
       </View>

@@ -6,6 +6,7 @@ const colors: IColors = {
   pink: '#FFC0CB',
   acidGreen: '#9ACD32',
   white: 'white',
+  floralWhite: '#FFFAF0',
 };
 
 export default colors;
