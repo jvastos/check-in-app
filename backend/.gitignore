@@ -4,6 +4,7 @@ node_modules/
 #Environmental variables
 .envrc
 .nvmrc
+.env
 
 #Fly.io conifg file
 fly.toml
