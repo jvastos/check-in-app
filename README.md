@@ -3,8 +3,6 @@
 A hobby project consisting of a generic application where users can be created and checked in to a list, so other users know they are checked in.
 An example of usecase would be a climbing gym, where climbers let other climbers know they are there having a climbing session (or just a cup of coffee/tee and a banana).
 
----
-
 ## About the Project
 
 #### 🔩 Tech
