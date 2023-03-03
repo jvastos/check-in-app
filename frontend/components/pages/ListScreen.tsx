@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { userStateStore } from './zustandStore';
 import { API_URL } from '@env';
@@ -16,8 +16,9 @@ const screenStyles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   wrapper: {
-    padding: 20,
+    paddingHorizontal: 20,
     textAlign: 'center',
+    paddingTop: 100,
   },
   headline: {
     fontSize: 40,
@@ -65,7 +66,9 @@ const ListScreen = ({ navigation }: Props) => {
   useEffect(() => {
     const fetchAllUsers = async () => {
       const allUsers = await request<User[]>(`${API_URL}allusers`);
-      const newUsers = allUsers.filter((i) => i.isCheckedIn === true).map((i) => `${i.username}`);
+      const newUsers = allUsers
+        .filter((i) => i.isCheckedIn === true)
+        .map((i) => `${i.username}`);
 
       setCheckedInUsers(newUsers);
     };
@@ -74,21 +77,20 @@ const ListScreen = ({ navigation }: Props) => {
 
   return (
     <View style={screenStyles.container}>
-      <View style={screenStyles.wrapper}>
+      <ScrollView style={screenStyles.wrapper}>
         <Text style={screenStyles.headline}>Who is in the wall right now:</Text>
         {checkedInUsers[0] !== undefined ? (
           checkedInUsers.map((i) => (
-            <Text
-              style={screenStyles.name}
-              key={Math.random()}
-            >
+            <Text style={screenStyles.name} key={Math.random()}>
               {i}
             </Text>
           ))
         ) : (
-          <Text style={screenStyles.name}>Sad. It seems like no one is on the wall right now.</Text>
+          <Text style={screenStyles.name}>
+            Sad. It seems like no one is on the wall right now.
+          </Text>
         )}
-      </View>
+      </ScrollView>
     </View>
   );
 };
