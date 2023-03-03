@@ -33,6 +33,7 @@ const App = () => {
             headerTransparent: true,
             headerShadowVisible: false,
             headerBlurEffect: 'light',
+            headerTitleAlign: 'center',
             headerTitleStyle: {
               fontFamily: 'Dokdo_400Regular',
               fontSize: 30,
@@ -47,6 +48,7 @@ const App = () => {
             headerTransparent: true,
             headerShadowVisible: false,
             headerBlurEffect: 'light',
+            headerTitleAlign: 'center',
             headerTitleStyle: {
               fontFamily: 'Dokdo_400Regular',
               fontSize: 30,
