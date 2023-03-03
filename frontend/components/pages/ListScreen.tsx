@@ -19,6 +19,7 @@ const screenStyles = StyleSheet.create({
     paddingHorizontal: 20,
     textAlign: 'center',
     paddingTop: 100,
+    paddingBottom: 30,
   },
   headline: {
     fontSize: 40,
