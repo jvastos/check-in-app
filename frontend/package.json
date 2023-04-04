@@ -25,11 +25,7 @@
     "react-native-screens": "~3.18.0",
     "react-native-web": "~0.18.7",
     "zustand": "^4.1.5",
-<<<<<<< HEAD
-    "expo-splash-screen": "~0.17.5"
-=======
     "expo-location": "~15.0.1"
->>>>>>> Installs Expo geolocation lib and tests it on Login Screen.
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
