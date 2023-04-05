@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
-import { View, TextInput, StyleSheet, Text, Alert, TouchableOpacity, ScrollView } from 'react-native';
+import { View, TextInput, StyleSheet, Text, Alert, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { API_URL } from '@env';
 import { userStateStore } from './zustandStore';
 import { useFonts, Dokdo_400Regular } from '@expo-google-fonts/dokdo';
 import { ViaodaLibre_400Regular } from '@expo-google-fonts/viaoda-libre';
 import colors from '../colors';
+import * as Location from 'expo-location';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const screenStyles = StyleSheet.create({
 	background: {
@@ -20,23 +22,23 @@ const screenStyles = StyleSheet.create({
 		padding: 10,
 	},
 	logo: {
-		fontFamily: 'Dokdo_400Regular',
 		fontSize: 60,
 		color: colors.pink,
-		fontWeight: '700',
+		fontWeight: Platform.OS === 'android' ? undefined : '700',
 		textAlign: 'center',
+		fontFamily: 'Dokdo_400Regular',
 	},
 	inputLabel: {
-		fontFamily: 'Dokdo_400Regular',
 		fontSize: 34,
 		color: colors.white,
-		fontWeight: '700',
+		fontWeight: Platform.OS === 'android' ? undefined : '700',
+		fontFamily: 'Dokdo_400Regular',
 	},
 	input: {
 		height: 50,
 		marginVertical: 10,
 		borderWidth: 4,
-		padding: 10,
+		paddingLeft: 24,
 		borderColor: colors.white,
 		color: colors.white,
 		fontSize: 22,
@@ -46,15 +48,14 @@ const screenStyles = StyleSheet.create({
 		borderBottomRightRadius: 20,
 	},
 	minorText: {
-		fontSize: 18,
-		fontWeight: '900',
+		fontSize: Platform.OS === 'android' ? 24 : 18,
+		fontWeight: Platform.OS === 'android' ? undefined : '900',
 		color: colors.acidGreen,
 		marginVertical: 10,
 		fontFamily: 'ViaodaLibre_400Regular',
 	},
 	button: {
 		backgroundColor: colors.pink,
-		textAlign: 'center',
 		padding: 10,
 		borderTopLeftRadius: 50,
 		borderTopRightRadius: 50,
@@ -63,15 +64,16 @@ const screenStyles = StyleSheet.create({
 	},
 	buttonText: {
 		color: colors.white,
-		fontFamily: 'Dokdo_400Regular',
 		fontSize: 34,
+		textAlign: 'center',
+		fontFamily: 'Dokdo_400Regular',
 	},
 
 	termsText: {
 		color: colors.floralWhite,
-		fontFamily: 'Dokdo_400Regular',
 		fontSize: 34,
 		textAlign: 'justify',
+		fontFamily: 'Dokdo_400Regular',
 	},
 
 	copyText: {
@@ -132,7 +134,7 @@ const LoginScreen = ({ navigation }: Props) => {
 	const passwordStatusMessage: string = userStateStore((state) => state.passwordStatusMessage);
 	const setPasswordStatusMessage = userStateStore((state) => state.setPasswordStatusMessage);
 
-	let [fontsLoaded] = useFonts({
+	const [fonstLoaded] = useFonts({
 		Dokdo_400Regular,
 		ViaodaLibre_400Regular,
 	});
@@ -155,6 +157,24 @@ const LoginScreen = ({ navigation }: Props) => {
 			}
 		};
 		checkUsernameAvailability(username);
+	});
+
+	useEffect(() => {
+		(async () => {
+			let { status } = await Location.requestForegroundPermissionsAsync();
+			if (status !== 'granted') {
+				console.log('Permission to access location was denied');
+				return;
+			}
+
+			let location = await Location.getCurrentPositionAsync({});
+
+			if (location.coords.latitude.toString().includes('59.3368') && location.coords.longitude.toString().includes('18.0467')) {
+				console.log('You are at Futurice.');
+			} else {
+				console.log('You are not at Futurice.');
+			}
+		})();
 	});
 
 	const login = async (username: string, password: string) => {
@@ -202,10 +222,9 @@ const LoginScreen = ({ navigation }: Props) => {
 			setPasswordStatusMessage('Please double check your login credentials and try again.');
 		}
 	};
-
 	return (
 		<ScrollView style={screenStyles.background}>
-			<View style={screenStyles.container}>
+			<SafeAreaView style={screenStyles.container}>
 				<View style={screenStyles.wrapper}>
 					<Text style={screenStyles.logo}>GOAT Wall</Text>
 					<Text style={screenStyles.inputLabel}>Username</Text>
@@ -267,7 +286,7 @@ const LoginScreen = ({ navigation }: Props) => {
 						This is an experimental project by a newbie developer. For now it's not possible to colaborate in it. All rights reserved to João Almeida.
 					</Text>
 				</View>
-			</View>
+			</SafeAreaView>
 		</ScrollView>
 	);
 };
