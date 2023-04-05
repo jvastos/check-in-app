@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Platform } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { userStateStore } from './zustandStore';
 import { API_URL } from '@env';
@@ -16,13 +16,13 @@ const screenStyles = StyleSheet.create({
 		paddingHorizontal: 10,
 	},
 	greeting: {
-		fontWeight: '900',
+		fontWeight: Platform.OS === 'android' ? undefined : '900',
 		fontSize: 50,
 		fontFamily: 'Dokdo_400Regular',
 		color: colors.white,
 	},
 	statusTxt: {
-		fontWeight: '900',
+		fontWeight: Platform.OS === 'android' ? undefined : '900',
 		fontSize: 24,
 		fontFamily: 'ViaodaLibre_400Regular',
 		color: colors.acidGreen,
@@ -39,7 +39,7 @@ const screenStyles = StyleSheet.create({
 	buttonText: {
 		fontFamily: 'Dokdo_400Regular',
 		fontSize: 24,
-		fontWeight: '900',
+		fontWeight: Platform.OS === 'android' ? undefined : '900',
 		color: colors.white,
 	},
 });
@@ -53,16 +53,14 @@ type RootStackParamList = {
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
 const HomeScreen = ({ navigation }: Props) => {
-  const username: string = userStateStore((state) => state.username);
-  const userId: string = userStateStore((state) => state.userId);
-  const checkInStatus: boolean = userStateStore((state) => state.isCheckedIn);
-  const setIsCheckedIn = userStateStore((state) => state.setIsCheckedIn);
-  const userIsLoggedIn: boolean = userStateStore(
-    (state) => state.userIsLoggedIn
-  );
-  const setUserIsLoggedIn = userStateStore((state) => state.setUserIsLoggedIn);
+	const username: string = userStateStore((state) => state.username);
+	const userId: string = userStateStore((state) => state.userId);
+	const checkInStatus: boolean = userStateStore((state) => state.isCheckedIn);
+	const setIsCheckedIn = userStateStore((state) => state.setIsCheckedIn);
+	const userIsLoggedIn: boolean = userStateStore((state) => state.userIsLoggedIn);
+	const setUserIsLoggedIn = userStateStore((state) => state.setUserIsLoggedIn);
 
-	let [fontsLoaded] = useFonts({
+	const [fonstLoaded] = useFonts({
 		Dokdo_400Regular,
 		ViaodaLibre_400Regular,
 	});
@@ -89,41 +87,35 @@ const HomeScreen = ({ navigation }: Props) => {
 		!userIsLoggedIn && navigation.navigate('Login');
 	}, [userIsLoggedIn]);
 
-  return (
-    <View style={screenStyles.container}>
-      <Text style={screenStyles.greeting}>Hey {username} </Text>
-      <Text style={screenStyles.statusTxt}>
-        Your status: {checkInStatus === true ? 'Checked in' : 'Checked out'}
-      </Text>
-      <View style={screenStyles.button}>
-        <TouchableOpacity style={screenStyles.button} onPress={setIsCheckedIn}>
-          <Text style={screenStyles.buttonText}>
-            {checkInStatus === true ? 'Check out' : 'Check in'}
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View style={screenStyles.button}>
-        <TouchableOpacity
-          style={screenStyles.button}
-          onPress={() => {
-            navigation.navigate('List');
-          }}
-        >
-          <Text style={screenStyles.buttonText}>Check The Wall</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={screenStyles.button}>
-        <TouchableOpacity
-          style={screenStyles.button}
-          onPress={() => {
-            setUserIsLoggedIn(false);
-          }}
-        >
-          <Text style={screenStyles.buttonText}>Logout</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+	return (
+		<View style={screenStyles.container}>
+			<Text style={screenStyles.greeting}>Hey {username} </Text>
+			<Text style={screenStyles.statusTxt}>Your status: {checkInStatus === true ? 'Checked in' : 'Checked out'}</Text>
+			<View style={screenStyles.button}>
+				<TouchableOpacity style={screenStyles.button} onPress={setIsCheckedIn}>
+					<Text style={screenStyles.buttonText}>{checkInStatus === true ? 'Check out' : 'Check in'}</Text>
+				</TouchableOpacity>
+			</View>
+			<View style={screenStyles.button}>
+				<TouchableOpacity
+					style={screenStyles.button}
+					onPress={() => {
+						navigation.navigate('List');
+					}}>
+					<Text style={screenStyles.buttonText}>Check The Wall</Text>
+				</TouchableOpacity>
+			</View>
+			<View style={screenStyles.button}>
+				<TouchableOpacity
+					style={screenStyles.button}
+					onPress={() => {
+						setUserIsLoggedIn(false);
+					}}>
+					<Text style={screenStyles.buttonText}>Logout</Text>
+				</TouchableOpacity>
+			</View>
+		</View>
+	);
 };
 
 export default HomeScreen;

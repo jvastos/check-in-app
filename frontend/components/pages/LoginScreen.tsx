@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, TextInput, StyleSheet, Text, Alert, TouchableOpacity, ScrollView } from 'react-native';
+import { View, TextInput, StyleSheet, Text, Alert, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { API_URL } from '@env';
 import { userStateStore } from './zustandStore';
@@ -7,6 +7,7 @@ import { useFonts, Dokdo_400Regular } from '@expo-google-fonts/dokdo';
 import { ViaodaLibre_400Regular } from '@expo-google-fonts/viaoda-libre';
 import colors from '../colors';
 import * as Location from 'expo-location';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const screenStyles = StyleSheet.create({
 	background: {
@@ -21,23 +22,23 @@ const screenStyles = StyleSheet.create({
 		padding: 10,
 	},
 	logo: {
-		fontFamily: 'Dokdo_400Regular',
 		fontSize: 60,
 		color: colors.pink,
-		fontWeight: '700',
+		fontWeight: Platform.OS === 'android' ? undefined : '700',
 		textAlign: 'center',
+		fontFamily: 'Dokdo_400Regular',
 	},
 	inputLabel: {
-		fontFamily: 'Dokdo_400Regular',
 		fontSize: 34,
 		color: colors.white,
-		fontWeight: '700',
+		fontWeight: Platform.OS === 'android' ? undefined : '700',
+		fontFamily: 'Dokdo_400Regular',
 	},
 	input: {
 		height: 50,
 		marginVertical: 10,
 		borderWidth: 4,
-		padding: 10,
+		paddingLeft: 24,
 		borderColor: colors.white,
 		color: colors.white,
 		fontSize: 22,
@@ -47,15 +48,14 @@ const screenStyles = StyleSheet.create({
 		borderBottomRightRadius: 20,
 	},
 	minorText: {
-		fontSize: 18,
-		fontWeight: '900',
+		fontSize: Platform.OS === 'android' ? 24 : 18,
+		fontWeight: Platform.OS === 'android' ? undefined : '900',
 		color: colors.acidGreen,
 		marginVertical: 10,
 		fontFamily: 'ViaodaLibre_400Regular',
 	},
 	button: {
 		backgroundColor: colors.pink,
-		textAlign: 'center',
 		padding: 10,
 		borderTopLeftRadius: 50,
 		borderTopRightRadius: 50,
@@ -64,15 +64,16 @@ const screenStyles = StyleSheet.create({
 	},
 	buttonText: {
 		color: colors.white,
-		fontFamily: 'Dokdo_400Regular',
 		fontSize: 34,
+		textAlign: 'center',
+		fontFamily: 'Dokdo_400Regular',
 	},
 
 	termsText: {
 		color: colors.floralWhite,
-		fontFamily: 'Dokdo_400Regular',
 		fontSize: 34,
 		textAlign: 'justify',
+		fontFamily: 'Dokdo_400Regular',
 	},
 
 	copyText: {
@@ -102,244 +103,192 @@ async function allUsersRequest<T>(url: string): Promise<T> {
 	return await response.json();
 }
 
-async function userLoginRequest<T>(
-  url: string,
-  username: string,
-  password: string
-): Promise<T> {
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json;charset=UTF-8',
-    },
-    body: JSON.stringify({
-      username: username,
-      password: password,
-    }),
-  });
-  return await response.json();
+async function userLoginRequest<T>(url: string, username: string, password: string): Promise<T> {
+	const response = await fetch(url, {
+		method: 'POST',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json;charset=UTF-8',
+		},
+		body: JSON.stringify({
+			username: username,
+			password: password,
+		}),
+	});
+	return await response.json();
 }
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const LoginScreen = ({ navigation }: Props) => {
-  const setUserIsLoggedIn = userStateStore((state) => state.setUserIsLoggedIn);
-  const username: string = userStateStore((state) => state.username);
-  const setUserName = userStateStore((state) => state.setUserName);
-  const setUserId = userStateStore((state) => state.setUserId);
-  const password: string = userStateStore((state) => state.password);
-  const setPassword = userStateStore((state) => state.setPassword);
-  const usernameIsTaken: boolean = userStateStore(
-    (state) => state.usernameIsTaken
-  );
-  const setUsernameIsTaken = userStateStore(
-    (state) => state.setUsernameIsTaken
-  );
-  const usernameStatusMessage: string = userStateStore(
-    (state) => state.usernameStatusMessage
-  );
-  const setUsernameStatusMessage = userStateStore(
-    (state) => state.setUsernameStatusMessage
-  );
-  const passwordStatusMessage: string = userStateStore(
-    (state) => state.passwordStatusMessage
-  );
-  const setPasswordStatusMessage = userStateStore(
-    (state) => state.setPasswordStatusMessage
-  );
+	const setUserIsLoggedIn = userStateStore((state) => state.setUserIsLoggedIn);
+	const username: string = userStateStore((state) => state.username);
+	const setUserName = userStateStore((state) => state.setUserName);
+	const setUserId = userStateStore((state) => state.setUserId);
+	const password: string = userStateStore((state) => state.password);
+	const setPassword = userStateStore((state) => state.setPassword);
+	const usernameIsTaken: boolean = userStateStore((state) => state.usernameIsTaken);
+	const setUsernameIsTaken = userStateStore((state) => state.setUsernameIsTaken);
+	const usernameStatusMessage: string = userStateStore((state) => state.usernameStatusMessage);
+	const setUsernameStatusMessage = userStateStore((state) => state.setUsernameStatusMessage);
+	const passwordStatusMessage: string = userStateStore((state) => state.passwordStatusMessage);
+	const setPasswordStatusMessage = userStateStore((state) => state.setPasswordStatusMessage);
 
-	let [fontsLoaded] = useFonts({
+	const [fonstLoaded] = useFonts({
 		Dokdo_400Regular,
 		ViaodaLibre_400Regular,
 	});
 
-  useEffect(() => {
-    const checkUsernameAvailability = async (username: string) => {
-      try {
-        const allUsers = await allUsersRequest<User[]>(`${API_URL}allusers`);
-        const allUsernames = allUsers.map((i) => i.username);
-        if (allUsernames.includes(username)) {
-          setUsernameIsTaken(true);
-          setUsernameStatusMessage(
-            'Username is in use (Is that you? If yes, go on and log in.)'
-          );
-        } else {
-          setUsernameIsTaken(false);
-          setUsernameStatusMessage('');
-        }
-      } catch (error) {
-        Alert.alert('Error', `${error}`, [
-          { text: 'OK', onPress: () => console.log('OK Pressed') },
-        ]);
-        console.log(
-          'Somehting went wrong fetching the users from the DB.',
-          error
-        );
-      }
-    };
-    checkUsernameAvailability(username);
-  });
+	useEffect(() => {
+		const checkUsernameAvailability = async (username: string) => {
+			try {
+				const allUsers = await allUsersRequest<User[]>(`${API_URL}allusers`);
+				const allUsernames = allUsers.map((i) => i.username);
+				if (allUsernames.includes(username)) {
+					setUsernameIsTaken(true);
+					setUsernameStatusMessage('Username is in use (Is that you? If yes, go on and log in.)');
+				} else {
+					setUsernameIsTaken(false);
+					setUsernameStatusMessage('');
+				}
+			} catch (error) {
+				Alert.alert('Error', `${error}`, [{ text: 'OK', onPress: () => console.log('OK Pressed') }]);
+				console.log('Somehting went wrong fetching the users from the DB.', error);
+			}
+		};
+		checkUsernameAvailability(username);
+	});
 
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('Permission to access location was denied');
-        return;
-      }
+	useEffect(() => {
+		(async () => {
+			let { status } = await Location.requestForegroundPermissionsAsync();
+			if (status !== 'granted') {
+				console.log('Permission to access location was denied');
+				return;
+			}
 
-      let location = await Location.getCurrentPositionAsync({});
+			let location = await Location.getCurrentPositionAsync({});
 
-      if (
-        location.coords.latitude.toString().includes('59.3368') &&
-        location.coords.longitude.toString().includes('18.0467')
-      ) {
-        console.log('You are at Futurice.');
-      } else {
-        console.log('You are not at Futurice.');
-      }
-    })();
-  });
+			if (location.coords.latitude.toString().includes('59.3368') && location.coords.longitude.toString().includes('18.0467')) {
+				console.log('You are at Futurice.');
+			} else {
+				console.log('You are not at Futurice.');
+			}
+		})();
+	});
 
-  const login = async (username: string, password: string) => {
-    if (username !== '' && password !== '') {
-      try {
-        const user = await userLoginRequest<User>(
-          `${API_URL}logInUser`,
-          username,
-          password
-        );
-        if (user.username === username) {
-          setUserId(user._id);
-          setUserIsLoggedIn(true);
-          navigation.navigate('Home');
-        }
-      } catch (error) {
-        Alert.alert('Error', `${error}`, [
-          { text: 'OK', onPress: () => console.log('OK Pressed') },
-        ]);
-        setPasswordStatusMessage(
-          'Please double-check your password and try again.'
-        );
-        console.log('Somehting went wrong logging in the user.', error);
-      }
-    } else {
-      setPasswordStatusMessage(
-        'Please double check your login credentials and try again.'
-      );
-    }
-  };
+	const login = async (username: string, password: string) => {
+		if (username !== '' && password !== '') {
+			try {
+				const user = await userLoginRequest<User>(`${API_URL}logInUser`, username, password);
+				if (user.username === username) {
+					setUserId(user._id);
+					setUserIsLoggedIn(true);
+					navigation.navigate('Home');
+				}
+			} catch (error) {
+				Alert.alert('Error', `${error}`, [{ text: 'OK', onPress: () => console.log('OK Pressed') }]);
+				setPasswordStatusMessage('Please double-check your password and try again.');
+				console.log('Somehting went wrong logging in the user.', error);
+			}
+		} else {
+			setPasswordStatusMessage('Please double check your login credentials and try again.');
+		}
+	};
 
-  const signup = async (username: string, password: string) => {
-    const userInfo = {
-      username: username,
-      password: password,
-    };
-    if (username !== '' && password !== '') {
-      try {
-        const res = await fetch(`${API_URL}users`, {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(userInfo),
-        });
-        const { _id } = await res.json();
-        setUserId(_id);
-        setUserIsLoggedIn(true);
-        navigation.navigate('Home');
-      } catch (error) {
-        console.log(
-          'Something went wrong while trying to create a new user in the DB.',
-          error
-        );
-      }
-    } else {
-      setPasswordStatusMessage(
-        'Please double check your login credentials and try again.'
-      );
-    }
-  };
-
-  return (
-    <ScrollView style={screenStyles.background}>
-      <View style={screenStyles.container}>
-        <View style={screenStyles.wrapper}>
-          <Text style={screenStyles.logo}>GOAT Wall</Text>
-          <Text style={screenStyles.inputLabel}>Username</Text>
-          <TextInput
-            style={screenStyles.input}
-            multiline={false}
-            clearButtonMode='always'
-            placeholder='ex. dope_gecko23'
-            onChange={(event) => {
-              setUserName(event.nativeEvent.text);
-            }}
-            value={username}
-            autoComplete='username'
-            autoCorrect={false}
-            selectTextOnFocus={true}
-            autoCapitalize='none'
-            placeholderTextColor={colors.white}
-          />
-          <Text style={screenStyles.minorText}>{usernameStatusMessage}</Text>
-          <Text style={screenStyles.inputLabel}>Password</Text>
-          <TextInput
-            style={screenStyles.input}
-            multiline={false}
-            clearButtonMode='always'
-            placeholder='ex. n!rv@na91'
-            autoCorrect={false}
-            secureTextEntry={true}
-            maxLength={12}
-            selectTextOnFocus={true}
-            value={password}
-            onChange={(event) => {
-              setPassword(event.nativeEvent.text);
-            }}
-            onFocus={() => {
-              setPasswordStatusMessage('');
-            }}
-            placeholderTextColor={colors.white}
-          />
-          <Text style={screenStyles.minorText}>{passwordStatusMessage}</Text>
-          <TouchableOpacity
-            style={screenStyles.button}
-            onPress={
-              usernameIsTaken
-                ? () => {
-                    login(username, password);
-                  }
-                : () => {
-                    signup(username, password);
-                  }
-            }
-          >
-            <Text style={screenStyles.buttonText}>
-              {usernameIsTaken ? 'Login' : 'Signup'}
-            </Text>
-          </TouchableOpacity>
-          <Text style={screenStyles.minorText}>
-            If you haven't created a user before, go ahead and create one by
-            typing in the fields above.
-          </Text>
-          <Text style={screenStyles.termsText}>
-            No small letters. No shady agreements. No sensitive information
-            being stored. Just create a username. BE CREATIVE. Don't be racist,
-            sexist, homophobic, intolerant, offensive in any form. Enjoy the
-            company of your peers.
-          </Text>
-          <Text style={screenStyles.copyText}>
-            This is an experimental project by a newbie developer. For now it's
-            not possible to colaborate in it. All rights reserved to João
-            Almeida.
-          </Text>
-        </View>
-      </View>
-    </ScrollView>
-  );
+	const signup = async (username: string, password: string) => {
+		const userInfo = {
+			username: username,
+			password: password,
+		};
+		if (username !== '' && password !== '') {
+			try {
+				const res = await fetch(`${API_URL}users`, {
+					method: 'POST',
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(userInfo),
+				});
+				const { _id } = await res.json();
+				setUserId(_id);
+				setUserIsLoggedIn(true);
+				navigation.navigate('Home');
+			} catch (error) {
+				console.log('Something went wrong while trying to create a new user in the DB.', error);
+			}
+		} else {
+			setPasswordStatusMessage('Please double check your login credentials and try again.');
+		}
+	};
+	return (
+		<ScrollView style={screenStyles.background}>
+			<SafeAreaView style={screenStyles.container}>
+				<View style={screenStyles.wrapper}>
+					<Text style={screenStyles.logo}>GOAT Wall</Text>
+					<Text style={screenStyles.inputLabel}>Username</Text>
+					<TextInput
+						style={screenStyles.input}
+						multiline={false}
+						clearButtonMode='always'
+						placeholder='ex. dope_gecko23'
+						onChange={(event) => {
+							setUserName(event.nativeEvent.text);
+						}}
+						value={username}
+						autoComplete='username'
+						autoCorrect={false}
+						selectTextOnFocus={true}
+						autoCapitalize='none'
+						placeholderTextColor={colors.white}
+					/>
+					<Text style={screenStyles.minorText}>{usernameStatusMessage}</Text>
+					<Text style={screenStyles.inputLabel}>Password</Text>
+					<TextInput
+						style={screenStyles.input}
+						multiline={false}
+						clearButtonMode='always'
+						placeholder='ex. n!rv@na91'
+						autoCorrect={false}
+						secureTextEntry={true}
+						maxLength={12}
+						selectTextOnFocus={true}
+						value={password}
+						onChange={(event) => {
+							setPassword(event.nativeEvent.text);
+						}}
+						onFocus={() => {
+							setPasswordStatusMessage('');
+						}}
+						placeholderTextColor={colors.white}
+					/>
+					<Text style={screenStyles.minorText}>{passwordStatusMessage}</Text>
+					<TouchableOpacity
+						style={screenStyles.button}
+						onPress={
+							usernameIsTaken
+								? () => {
+										login(username, password);
+								  }
+								: () => {
+										signup(username, password);
+								  }
+						}>
+						<Text style={screenStyles.buttonText}>{usernameIsTaken ? 'Login' : 'Signup'}</Text>
+					</TouchableOpacity>
+					<Text style={screenStyles.minorText}>If you haven't created a user before, go ahead and create one by typing in the fields above.</Text>
+					<Text style={screenStyles.termsText}>
+						No small letters. No shady agreements. No sensitive information being stored. Just create a username. BE CREATIVE. Don't be racist, sexist, homophobic, intolerant, offensive in
+						any form. Enjoy the company of your peers.
+					</Text>
+					<Text style={screenStyles.copyText}>
+						This is an experimental project by a newbie developer. For now it's not possible to colaborate in it. All rights reserved to João Almeida.
+					</Text>
+				</View>
+			</SafeAreaView>
+		</ScrollView>
+	);
 };
 
 export default LoginScreen;

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Platform } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { userStateStore } from './zustandStore';
 import { API_URL } from '@env';
@@ -23,15 +23,17 @@ const screenStyles = StyleSheet.create({
 	},
 	headline: {
 		fontSize: 40,
-		fontWeight: '900',
+		fontWeight: Platform.OS === 'android' ? undefined : '900',
 		fontFamily: 'Dokdo_400Regular',
 		color: colors.white,
+		textAlign: 'center',
 	},
 	name: {
 		fontSize: 30,
-		fontWeight: '900',
+		fontWeight: Platform.OS === 'android' ? undefined : '900',
 		fontFamily: 'ViaodaLibre_400Regular',
 		color: colors.acidGreen,
+		textAlign: 'center',
 		paddingVertical: 10,
 	},
 });
@@ -59,7 +61,7 @@ const ListScreen = ({ navigation }: Props) => {
 	const checkedInUsers = userStateStore((state) => state.checkedInUsers);
 	const setCheckedInUsers = userStateStore((state) => state.setCheckedInUsers);
 
-	let [fontsLoaded] = useFonts({
+	const [fonstLoaded] = useFonts({
 		Dokdo_400Regular,
 		ViaodaLibre_400Regular,
 	});
