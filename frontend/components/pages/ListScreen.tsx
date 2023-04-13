@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Platform } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { userStateStore } from './zustandStore';
-import { API_URL } from '@env';
 import { useFonts, Dokdo_400Regular } from '@expo-google-fonts/dokdo';
 import { ViaodaLibre_400Regular } from '@expo-google-fonts/viaoda-libre';
-import colors from '../colors';
+import { API_URL } from '../service/helpers';
+import colors from '../service/colors';
 
 const screenStyles = StyleSheet.create({
 	container: {
@@ -68,7 +68,7 @@ const ListScreen = ({ navigation }: Props) => {
 
 	useEffect(() => {
 		const fetchAllUsers = async () => {
-			const allUsers = await request<User[]>(`${API_URL}allusers`);
+			const allUsers = await request<User[]>(`${API_URL}/allusers`);
 			const newUsers = allUsers.filter((i) => i.isCheckedIn === true).map((i) => `${i.username}`);
 
 			setCheckedInUsers(newUsers);

@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Platform } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { userStateStore } from './zustandStore';
-import { API_URL } from '@env';
 import { useFonts, Dokdo_400Regular } from '@expo-google-fonts/dokdo';
 import { ViaodaLibre_400Regular } from '@expo-google-fonts/viaoda-libre';
-import colors from '../colors';
+import { API_URL } from '../service/helpers';
+import colors from '../service/colors';
 
 const screenStyles = StyleSheet.create({
 	container: {
@@ -67,7 +67,7 @@ const HomeScreen = ({ navigation }: Props) => {
 
 	const updateUserCheckInStatus = async (checkInStatus: boolean) => {
 		try {
-			await fetch(`${API_URL}${userId}/${checkInStatus}`, {
+			await fetch(`${API_URL}/${userId}/${checkInStatus}`, {
 				method: 'PATCH',
 				headers: {
 					Accept: 'application/json',

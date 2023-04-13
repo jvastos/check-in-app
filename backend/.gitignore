@@ -11,3 +11,6 @@ fly.toml
 
 #Http tester
 test.http
+
+#Typescrip map files
+.js.map

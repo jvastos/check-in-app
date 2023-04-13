@@ -3,29 +3,29 @@ dotenv.config();
 import { createServer } from './server';
 import { MongoClient } from 'mongodb';
 
-const DB_URL = process.env.MONGODB_URL!;
+const DB_URL = process.env.NODE_ENV === undefined ? process.env.MONGODB_URL_DEV : process.env.MONGODB_URL;
 const DB_NAME = 'check-in';
 
 const PORT = process.env.PORT;
 
 async function main() {
-  const client = new MongoClient(DB_URL);
-  await client.connect();
+	const client = new MongoClient(DB_URL);
+	await client.connect();
 
-  const db = client.db(DB_NAME);
+	const db = client.db(DB_NAME);
 
-  const server = createServer(db);
+	const server = createServer(db);
 
-  server.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
+	server.listen(PORT, () => {
+		console.log(`Server running on http://localhost:${PORT}`);
+	});
 }
 
 process.on('SIGINT', () => process.exit(0));
 process.on('SIGTERM', () => process.exit(0));
 
 main().catch((err) => {
-  console.error('Something went wrong running the main fnc', err);
+	console.error('Something went wrong running the main fnc', err);
 
-  process.exit(1);
+	process.exit(1);
 });

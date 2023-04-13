@@ -16,7 +16,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const server_1 = require("./server");
 const mongodb_1 = require("mongodb");
-const DB_URL = process.env.MONGODB_URL;
+const DB_URL = process.env.NODE_ENV === undefined ? process.env.MONGODB_URL_DEV : process.env.MONGODB_URL;
 const DB_NAME = 'check-in';
 const PORT = process.env.PORT;
 function main() {

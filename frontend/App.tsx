@@ -1,12 +1,10 @@
 import React from 'react';
-import { Text, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './components/pages/HomeScreen';
 import ListScreen from './components/pages/ListScreen';
 import LoginScreen from './components/pages/LoginScreen';
-import { useFonts, Dokdo_400Regular } from '@expo-google-fonts/dokdo';
-import { ViaodaLibre_400Regular } from '@expo-google-fonts/viaoda-libre';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
