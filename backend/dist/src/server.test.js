@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 describe('Testing that API:', () => {
     it('Gets all users from DB.', () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield fetch('https://checkin-app-backend.fly.dev/allusers');
+        const response = yield fetch('https://checkin-app-api.fly.dev/allusers');
         const parsedResponse = yield response.json();
         expect(response.status).toBe(200);
         parsedResponse.forEach((i) => {
@@ -22,11 +22,11 @@ describe('Testing that API:', () => {
         });
     }));
     it('Checks in a user.', () => __awaiter(void 0, void 0, void 0, function* () {
-        const allUsers = yield fetch('https://checkin-app-backend.fly.dev/allusers');
+        const allUsers = yield fetch('https://checkin-app-api.fly.dev/allusers');
         const parsedAllUsers = yield allUsers.json();
         const randomUser = parsedAllUsers[0];
         try {
-            const checkInUserRes = yield fetch(`https://checkin-app-backend.fly.dev/${randomUser._id}/${!randomUser.isCheckedIn}`, {
+            const checkInUserRes = yield fetch(`https://checkin-app-api.fly.dev/${randomUser._id}/${!randomUser.isCheckedIn}`, {
                 method: 'PATCH',
                 headers: {
                     Accept: 'application/json',
@@ -38,7 +38,7 @@ describe('Testing that API:', () => {
             expect(checkedInUser.affected.value.isCheckedIn).toBe(!randomUser.isCheckedIn);
         }
         finally {
-            yield fetch(`https://checkin-app-backend.fly.dev/${randomUser._id}/${randomUser.isCheckedIn}`, {
+            yield fetch(`https://checkin-app-api.fly.dev/${randomUser._id}/${randomUser.isCheckedIn}`, {
                 method: 'PATCH',
                 headers: {
                     Accept: 'application/json',
@@ -48,7 +48,7 @@ describe('Testing that API:', () => {
         }
     }));
     it('Logs in a user.', () => __awaiter(void 0, void 0, void 0, function* () {
-        const allUsers = yield fetch('https://checkin-app-backend.fly.dev/allusers');
+        const allUsers = yield fetch('https://checkin-app-api.fly.dev/allusers');
         const parsedAllUsers = yield allUsers.json();
         const jUser = parsedAllUsers.find((i) => i.username === 'j');
         const body = {
@@ -56,7 +56,7 @@ describe('Testing that API:', () => {
             password: 'j',
         };
         const stringBody = JSON.stringify(body);
-        const logInUserRes = yield fetch('https://checkin-app-backend.fly.dev/logInUser', {
+        const logInUserRes = yield fetch('https://checkin-app-api.fly.dev/logInUser', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
