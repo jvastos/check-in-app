@@ -3,13 +3,15 @@ dotenv.config();
 import { createServer } from './server';
 import { MongoClient } from 'mongodb';
 
-const DB_URL = process.env.MONGODB_URL;
+const DB_URI = process.env.NODE_ENV === undefined ? process.env.MONGODB_URI_DEV : process.env.MONGODB_URI;
 const DB_NAME = 'check-in';
 
 const PORT = process.env.PORT;
 
 async function main() {
-	const client = new MongoClient(DB_URL);
+	console.log(DB_URI);
+
+	const client = new MongoClient(DB_URI);
 	await client.connect();
 
 	const db = client.db(DB_NAME);

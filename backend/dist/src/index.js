@@ -16,12 +16,13 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const server_1 = require("./server");
 const mongodb_1 = require("mongodb");
-const DB_URL = process.env.NODE_ENV === undefined ? process.env.MONGODB_URL_DEV : process.env.MONGODB_URL;
+const DB_URI = process.env.NODE_ENV === undefined ? process.env.MONGODB_URI_DEV : process.env.MONGODB_URI;
 const DB_NAME = 'check-in';
 const PORT = process.env.PORT;
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        const client = new mongodb_1.MongoClient(DB_URL);
+        console.log(DB_URI);
+        const client = new mongodb_1.MongoClient(DB_URI);
         yield client.connect();
         const db = client.db(DB_NAME);
         const server = (0, server_1.createServer)(db);
