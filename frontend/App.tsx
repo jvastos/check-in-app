@@ -5,6 +5,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './components/pages/HomeScreen';
 import ListScreen from './components/pages/ListScreen';
 import LoginScreen from './components/pages/LoginScreen';
+import { useFonts, Dokdo_400Regular } from '@expo-google-fonts/dokdo';
+import { ViaodaLibre_400Regular } from '@expo-google-fonts/viaoda-libre';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -15,6 +17,11 @@ type RootStackParamList = {
 };
 
 const App = () => {
+	const [fonstLoaded] = useFonts({
+		Dokdo_400Regular,
+		ViaodaLibre_400Regular,
+	});
+
 	return (
 		<NavigationContainer>
 			<RootStack.Navigator>
