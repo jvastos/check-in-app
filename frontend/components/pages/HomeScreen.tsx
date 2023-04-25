@@ -52,22 +52,29 @@ type RootStackParamList = {
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
+interface User {
+	username: string;
+	password: string;
+	isCheckedIn: boolean;
+}
+
 const HomeScreen = ({ navigation }: Props) => {
 	const username: string = userStateStore((state) => state.username);
 	const userId: string = userStateStore((state) => state.userId);
-	const checkInStatus: boolean = userStateStore((state) => state.isCheckedIn);
-	const setIsCheckedIn = userStateStore((state) => state.setIsCheckedIn);
+	const isCheckedIn: boolean = userStateStore((state) => state.isCheckedIn);
+	const toggleIsCheckedIn = userStateStore((state) => state.toggleIsCheckedIn);
 	const userIsLoggedIn: boolean = userStateStore((state) => state.userIsLoggedIn);
 	const setUserIsLoggedIn = userStateStore((state) => state.setUserIsLoggedIn);
+	const setCheckedInUsers = userStateStore((state) => state.setCheckedInUsers);
 
 	const [fonstLoaded] = useFonts({
 		Dokdo_400Regular,
 		ViaodaLibre_400Regular,
 	});
 
-	const updateUserCheckInStatus = async (checkInStatus: boolean) => {
+	const updateUserCheckInStatusOnDB = async (isCheckedIn: boolean) => {
 		try {
-			await fetch(`${API_URL}/${userId}/${checkInStatus}`, {
+			await fetch(`${API_URL}/${userId}/${isCheckedIn}`, {
 				method: 'PATCH',
 				headers: {
 					Accept: 'application/json',
@@ -79,9 +86,21 @@ const HomeScreen = ({ navigation }: Props) => {
 		}
 	};
 
+	async function request<T>(url: string): Promise<T> {
+		const response = await fetch(url);
+		return await response.json();
+	}
+
 	useEffect(() => {
-		updateUserCheckInStatus(checkInStatus);
-	}, [checkInStatus]);
+		const fetchAllUsers = async () => {
+			await updateUserCheckInStatusOnDB(isCheckedIn);
+			const DBallUsers = await request<User[]>(`${API_URL}/allusers`);
+			const DBcheckedInUsers = DBallUsers.filter((i) => i.isCheckedIn === true).map((i) => `${i.username}`);
+
+			setCheckedInUsers(DBcheckedInUsers);
+		};
+		fetchAllUsers();
+	}, [isCheckedIn]);
 
 	useEffect(() => {
 		!userIsLoggedIn && navigation.navigate('Login');
@@ -90,10 +109,14 @@ const HomeScreen = ({ navigation }: Props) => {
 	return (
 		<View style={screenStyles.container}>
 			<Text style={screenStyles.greeting}>Hey {username} </Text>
-			<Text style={screenStyles.statusTxt}>Your status: {checkInStatus === true ? 'Checked in' : 'Checked out'}</Text>
+			<Text style={screenStyles.statusTxt}>Your status: {isCheckedIn === true ? 'Checked in' : 'Checked out'}</Text>
 			<View style={screenStyles.button}>
-				<TouchableOpacity style={screenStyles.button} onPress={setIsCheckedIn}>
-					<Text style={screenStyles.buttonText}>{checkInStatus === true ? 'Check out' : 'Check in'}</Text>
+				<TouchableOpacity
+					style={screenStyles.button}
+					onPress={() => {
+						toggleIsCheckedIn();
+					}}>
+					<Text style={screenStyles.buttonText}>{isCheckedIn === true ? 'Check out' : 'Check in'}</Text>
 				</TouchableOpacity>
 			</View>
 			<View style={screenStyles.button}>
