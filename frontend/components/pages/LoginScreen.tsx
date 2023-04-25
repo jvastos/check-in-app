@@ -175,7 +175,7 @@ const LoginScreen = ({ navigation }: Props) => {
 				console.log('You are not at Futurice.');
 			}
 		})();
-	});
+	}, []);
 
 	const login = async (username: string, password: string) => {
 		if (username !== '' && password !== '') {
